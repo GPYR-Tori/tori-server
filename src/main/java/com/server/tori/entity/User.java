@@ -1,31 +1,56 @@
 package com.server.tori.entity;
 
+import com.server.tori.dto.MyPageEditRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "userinfo")
 @Entity
 @Getter
 public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(name = "user_id")
+  public Long id;
 
-  private String email;
+  public String email;
 
-  private String password;
+  public String password;
 
-  private long age;
+  public LocalDate birthdate; //생년월일로 받는다 Date 타입, localdate yyyy-mm-dd
 
-  private String gender;
+  public String gender;
 
-  private String nation;
+  public String nation;
 
-  private String language;
+  public String language;
 
-  private String nickname;
+  public String nickname;
 
+  public User(Long id, String email, String password) {
+  }
+
+  public User(String password, String language, String nickname) {
+  }
+
+
+  public void patch(MyPageEditRequestDto myPageEditRequestDto) {
+    if (myPageEditRequestDto.getPassword() != null) {
+      this.password = myPageEditRequestDto.getPassword();
+    }
+    if (myPageEditRequestDto.getLanguage() != null) {
+      this.language = myPageEditRequestDto.getLanguage();
+    }
+    if (myPageEditRequestDto.getNickname() != null) {
+      this.nickname = myPageEditRequestDto.getNickname();
+    }
+  }
 
 }
