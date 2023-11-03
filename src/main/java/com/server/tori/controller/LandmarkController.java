@@ -19,7 +19,7 @@ public class LandmarkController {
     // 홈 화면 (전체 여행지 조회)
     @GetMapping("/all")
     public List<LandmarkResponseDto> home() {
-        return landmarkService.getLandmark();
+        return landmarkService.getLandmarkAll();
     }
 
     // 상세 여행지 조회
@@ -31,19 +31,19 @@ public class LandmarkController {
     // 카테고리 조회
     @GetMapping(params = "category")
     public List<LandmarkResponseDto> landmarkCategory (@RequestParam("category") String category) {
-        return landmarkService.findByCategory(category);
+        return landmarkService.getLandmarkByCategory(category);
     }
 
     // 지역 조회
     @GetMapping(params = "location")
     public List<LandmarkResponseDto> landmarkLocation (@RequestParam("location") String location) {
-        return landmarkService.findByLocation(location);
+        return landmarkService.getLandmarkByLocation(location);
     }
 
     // 지역 + 카테고리 조회
     @GetMapping(params = {"category", "location"})
     public List<LandmarkResponseDto> landmarkCategoryAndLocation (Model model, @RequestParam("category") String category,
                                                @RequestParam("location") String location) {
-        return landmarkService.findByCategoryAndLocation(category, location);
+        return landmarkService.getLandmarkByCategoryAndLocation(category, location);
     }
 }

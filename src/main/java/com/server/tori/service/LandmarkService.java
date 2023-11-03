@@ -3,7 +3,9 @@ package com.server.tori.service;
 import com.server.tori.dto.LandmarkDetailResponseDto;
 import com.server.tori.dto.LandmarkResponseDto;
 import com.server.tori.entity.Landmark;
+import com.server.tori.entity.User;
 import com.server.tori.repository.LandmarkRepository;
+import com.server.tori.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,7 @@ public class LandmarkService {
     @Autowired
     private LandmarkRepository landmarkRepository;
 
-    public List<LandmarkResponseDto> getLandmark() {
+    public List<LandmarkResponseDto> getLandmarkAll() {
         List<Landmark> landmarkList = landmarkRepository.findAll();
         return getLandmarkResponseDtoList(landmarkList);
     }
@@ -32,17 +34,17 @@ public class LandmarkService {
         }
     }
 
-    public List<LandmarkResponseDto> findByCategory(String category) {
+    public List<LandmarkResponseDto> getLandmarkByCategory(String category) {
         List<Landmark> landmarkList = landmarkRepository.findByCategory(category);
         return getLandmarkResponseDtoList(landmarkList);
     }
 
-    public List<LandmarkResponseDto> findByLocation(String location) {
+    public List<LandmarkResponseDto> getLandmarkByLocation(String location) {
         List<Landmark> landmarkList = landmarkRepository.findByLocation(location);
         return getLandmarkResponseDtoList(landmarkList);
     }
 
-    public List<LandmarkResponseDto> findByCategoryAndLocation(String category, String location) {
+    public List<LandmarkResponseDto> getLandmarkByCategoryAndLocation(String category, String location) {
         List<Landmark> landmarkList = landmarkRepository.findByCategoryAndLocation(category, location);
         return getLandmarkResponseDtoList(landmarkList);
     }
