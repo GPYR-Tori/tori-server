@@ -2,10 +2,11 @@ package com.server.tori.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-public class LoginResponseDto {
-  private String email;
-  private Long id;
+public class CheckEmailResponseDto {
+  public String email;
+
 }

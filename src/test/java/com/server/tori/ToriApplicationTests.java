@@ -18,6 +18,7 @@ class ToriApplicationTests {
 	@Test
 	void testJpa() {
 
+		//
 		List<String> category1 = new ArrayList<>();
 		List<String> location1 = new ArrayList<>();
 		List<String> image1 = new ArrayList<>();
@@ -38,7 +39,7 @@ class ToriApplicationTests {
 		List<String> location2 = new ArrayList<>();
 		List<String> image2 = new ArrayList<>();
 
-		Landmark l2 = new Landmark("화담숲", "경기도 광주시 도척면 도척윗로 279-1", "LG 상록재단이 공익사업의 일환으로 설립 운영하는 수목원", 37.600222769591255, 126.82528030291823,
+		Landmark l2 = new Landmark("화담숲", "경기도 광주시 도척면 도척윗로 279-1", "LG 상록재단이 공익사업의 일환으로설립 운영하는 수목원", 37.600222769591255, 126.82528030291823,
 				"무료", "09:00 - 17:00", "https://www.goyang.go.kr/haengju/index.do", "한국어", category2, location2, image2);
 		l2.getCategory().add("자연");
 		l2.getCategory().add("체험");
