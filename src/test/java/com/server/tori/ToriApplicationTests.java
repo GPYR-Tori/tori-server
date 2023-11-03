@@ -22,6 +22,7 @@ class ToriApplicationTests {
 		List<String> location = new ArrayList<>();
 		List<String> image = new ArrayList<>();
 
+
 		Landmark l1 = new Landmark("행주 산성", "경기도 고양시 덕양구 행주로 15번길 89", "임진왜란 3대첩 '행주대첩'의 승전지", 37.600222769591255, 126.82528030291823,
 				"무료", "09:00 - 17:00", "https://www.goyang.go.kr/haengju/index.do", "한국어", category, location, image);
 		l1.getCategory().add("역사");

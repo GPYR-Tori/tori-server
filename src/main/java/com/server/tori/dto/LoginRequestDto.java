@@ -1,10 +1,16 @@
 package com.server.tori.dto;
 
+import com.server.tori.entity.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.sql.exec.spi.StandardEntityInstanceResolver;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class LoginRequestDto {
-  private String email;
-  private String password;
+  public String email;
+  public String password;
+
 }
