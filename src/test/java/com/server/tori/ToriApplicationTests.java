@@ -18,7 +18,6 @@ class ToriApplicationTests {
 	@Test
 	void testJpa() {
 
-		//
 		List<String> category1 = new ArrayList<>();
 		List<String> location1 = new ArrayList<>();
 		List<String> image1 = new ArrayList<>();
