@@ -8,12 +8,12 @@ import java.util.List;
 @Getter
 @Setter
 public class MyLandmarkResponseDto {
-  public List<Long> landmark_id;
-  public Long user_id;
+  public List<LandmarkValueDto> landmarks;
+  public Long userId;
 
-  public MyLandmarkResponseDto(Long user_id, List<Long> landmark_id) {
-    this.landmark_id = landmark_id;
-    this.user_id = user_id;
+  public MyLandmarkResponseDto(List<LandmarkValueDto> landmarks, Long userId) {
+    this.landmarks = landmarks;
+    this.userId = userId;
   }
 
 }

@@ -14,7 +14,7 @@ public class LandmarkLikeController {
   @Autowired
   LandmarkLikeService landmarkLikeService;
 
-
+  // 여행지 좋아요 추가
   @PostMapping("/landmarks/{landmark_id}/like")
   public ResponseEntity<LandmarkLikeResponseDto> landmark_like(@RequestBody LandmarkLikeRequestDto landmarkRequestDto) {
     // 1. 서비스에 보내서 레파지토리에 좋아요 누른 여행지 저장한 내용 불러오기
@@ -31,4 +31,9 @@ public class LandmarkLikeController {
     return ResponseEntity.status(HttpStatus.OK).body(myLandmarksDto);
   }
 
+  // 여행지 좋아요 삭제
+  @DeleteMapping("/landmarks/{landmark_id}/like")
+  public void landmarkLike_delete(@PathVariable Long landmark_id) {
+    landmarkLikeService.landmarkLikeDelete(landmark_id);
+  }
 }
