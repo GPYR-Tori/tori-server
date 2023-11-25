@@ -20,8 +20,6 @@ public class JoinRequestDto {
 
   private String password;
 
-  private LocalDate birthdate;
-
   private String gender;
 
   private String nation;
@@ -32,6 +30,6 @@ public class JoinRequestDto {
 
   public User toEntity() {
 
-    return new User(id, email, password, birthdate, gender, nation, language, nickname);
+    return new User(id, email, password, gender, nation, language, nickname);
   }
 }

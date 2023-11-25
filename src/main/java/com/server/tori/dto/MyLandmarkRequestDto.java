@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class MyLandmarkRequestDto {
-  public Long user_id;
+  public Long userId;
 }

@@ -17,8 +17,6 @@ public class MyPageEditViewResponseDto {
 
   private String password;
 
-  private LocalDate birthdate;
-
   private String gender;
 
   private String nation;
