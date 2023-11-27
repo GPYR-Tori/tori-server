@@ -24,8 +24,6 @@ public class User {
 
   public String password;
 
-  public LocalDate birthdate; //생년월일로 받는다 Date 타입, localdate yyyy-mm-dd
-
   public String gender;
 
   public String nation;

@@ -18,7 +18,7 @@ public class UserService {
   public JoinResponseDto join(JoinRequestDto joinRequestDto) {
     User user = joinRequestDto.toEntity();
     User saved = userRepository.save(user);
-    return new JoinResponseDto(saved.getId(), saved.getEmail(), saved.getPassword(), saved.getBirthdate(), saved.getGender(), saved.getNation(), saved.getLanguage(), saved.getNickname()); // 전부 리털할 필요가있나?
+    return new JoinResponseDto(saved.getId(), saved.getEmail(), saved.getPassword(), saved.getGender(), saved.getNation(), saved.getLanguage(), saved.getNickname()); // 전부 리털할 필요가있나?
   }
 
   public MyPageResponseDto myPage(Long uesr_id) {
@@ -33,12 +33,12 @@ public class UserService {
     user.patch(myPageEditRequestDto);
     //3. 그 엔티티 저장
     User updated = userRepository.save(user);
-    return new MyPageEditResponseDto(updated.getId(), updated.getEmail(), updated.getPassword(), updated.getBirthdate(), updated.getGender(), updated.getNation(), updated.getLanguage(), updated.getNickname());
+    return new MyPageEditResponseDto(updated.getId(), updated.getEmail(), updated.getPassword(), updated.getGender(), updated.getNation(), updated.getLanguage(), updated.getNickname());
   }
 
   public MyPageEditViewResponseDto myPageEditView (Long id){
     User saved = userRepository.findById(id).orElseThrow();
-    return new MyPageEditViewResponseDto(saved.getId(), saved.getEmail(), saved.getPassword(), saved.getBirthdate(), saved.getGender(), saved.getNation(), saved.getLanguage(), saved.getNickname());
+    return new MyPageEditViewResponseDto(saved.getId(), saved.getEmail(), saved.getPassword(), saved.getGender(), saved.getNation(), saved.getLanguage(), saved.getNickname());
   }
 
 
