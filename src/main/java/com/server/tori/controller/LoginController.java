@@ -45,7 +45,4 @@ public class LoginController {
 
   }
 
-//  @PostMapping("/logout")
-// 4. 로그아웃은 일단 보류
-
 }

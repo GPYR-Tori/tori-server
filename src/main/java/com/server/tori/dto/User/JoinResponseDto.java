@@ -1,12 +1,7 @@
 package com.server.tori.dto.User;
 
-import com.server.tori.entity.User;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
@@ -17,8 +12,6 @@ public class JoinResponseDto {
   private String email;
 
   private String password;
-
-  private LocalDate birthdate;
 
   private String gender;
 

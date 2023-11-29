@@ -23,9 +23,9 @@ public class LandmarkController {
 
     // 전체 조회 (홈 화면), 지역 + 카테고리 필터링 후 조회 (QueryDsl 사용)
     @GetMapping
-    public List<LandmarkViewResponseDto> getLandmarksFilter (@RequestParam(name = "userId", required = false) Long userId,
-                                                              @RequestParam(name = "category", required = false) String category,
-                                                              @RequestParam(name = "location", required = false) String location) {
+    public List<LandmarkViewResponseDto> getLandmarksFilter(@RequestParam(name = "userId", required = false) Long userId,
+                                                            @RequestParam(name = "category", required = false) String category,
+                                                            @RequestParam(name = "location", required = false) String location) {
 
         return landmarkService.getLandmarksFilter(userId, category, location);
     }
