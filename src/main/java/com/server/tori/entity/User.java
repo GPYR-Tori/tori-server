@@ -1,12 +1,14 @@
 package com.server.tori.entity;
 
-import com.server.tori.dto.MyPageEditRequestDto;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.server.tori.dto.User.MyPageEditRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,7 +39,6 @@ public class User {
 
   public User(String password, String language, String nickname) {
   }
-
 
   public void patch(MyPageEditRequestDto myPageEditRequestDto) {
     if (myPageEditRequestDto.getPassword() != null) {

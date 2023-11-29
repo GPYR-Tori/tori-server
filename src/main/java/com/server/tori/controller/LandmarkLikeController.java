@@ -1,8 +1,8 @@
 package com.server.tori.controller;
 
-import com.server.tori.dto.LandmarkLikeResponseDto;
-import com.server.tori.dto.LandmarkLikeRequestDto;
-import com.server.tori.dto.MyLandmarkResponseDto;
+import com.server.tori.dto.Landmark.LandmarkLikeResponseDto;
+import com.server.tori.dto.Landmark.LandmarkLikeRequestDto;
+import com.server.tori.dto.Landmark.MyLandmarkResponseDto;
 import com.server.tori.service.LandmarkLikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

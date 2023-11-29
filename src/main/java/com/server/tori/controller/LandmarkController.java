@@ -1,10 +1,9 @@
 package com.server.tori.controller;
 
-import com.server.tori.dto.LandmarkDetailResponseDto;
-import com.server.tori.dto.LandmarkResponseDto;
+import com.server.tori.dto.Landmark.LandmarkViewDetailResponseDto;
+import com.server.tori.dto.Landmark.LandmarkViewResponseDto;
 import com.server.tori.service.LandmarkService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,35 +14,19 @@ public class LandmarkController {
 
     @Autowired
     private LandmarkService landmarkService;
-    
-    // 홈 화면 (전체 여행지 조회)
-    @GetMapping("/all")
-    public List<LandmarkResponseDto> home() {
-        return landmarkService.getLandmarkAll();
-    }
 
     // 상세 여행지 조회
     @GetMapping("/{id}")
-    public LandmarkDetailResponseDto landmarkDetail(@PathVariable("id") Long id) {
-        return landmarkService.getLandmarkById(id);
+    public LandmarkViewDetailResponseDto getLandmarkDetail(@PathVariable("id") Long id, @RequestParam(name = "userId", required = false) Long userId) {
+        return landmarkService.getLandmarkDetail(id, userId);
     }
 
-    // 카테고리 조회
-    @GetMapping(params = "category")
-    public List<LandmarkResponseDto> landmarkCategory (@RequestParam("category") String category) {
-        return landmarkService.getLandmarkByCategory(category);
-    }
+    // 전체 조회 (홈 화면), 지역 + 카테고리 필터링 후 조회 (QueryDsl 사용)
+    @GetMapping
+    public List<LandmarkViewResponseDto> getLandmarksFilter(@RequestParam(name = "userId", required = false) Long userId,
+                                                            @RequestParam(name = "category", required = false) String category,
+                                                            @RequestParam(name = "location", required = false) String location) {
 
-    // 지역 조회
-    @GetMapping(params = "location")
-    public List<LandmarkResponseDto> landmarkLocation (@RequestParam("location") String location) {
-        return landmarkService.getLandmarkByLocation(location);
-    }
-
-    // 지역 + 카테고리 조회
-    @GetMapping(params = {"category", "location"})
-    public List<LandmarkResponseDto> landmarkCategoryAndLocation (Model model, @RequestParam("category") String category,
-                                               @RequestParam("location") String location) {
-        return landmarkService.getLandmarkByCategoryAndLocation(category, location);
+        return landmarkService.getLandmarksFilter(userId, category, location);
     }
 }

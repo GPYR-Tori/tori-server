@@ -1,10 +1,8 @@
 package com.server.tori.service;
 
-import com.server.tori.dto.GuideResponseDto;
-import com.server.tori.dto.GuideTourBusResponseDto;
-import com.server.tori.dto.GuideValueDto;
+import com.server.tori.dto.Guide.GuideResponseDto;
+import com.server.tori.dto.Guide.GuideValueDto;
 import com.server.tori.entity.Guide;
-import com.server.tori.entity.TourBus;
 import com.server.tori.repository.GuideRepository;
 import com.server.tori.repository.TourBusRepository;
 import org.springframework.beans.factory.annotation.Autowired;

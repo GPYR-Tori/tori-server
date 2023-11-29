@@ -1,7 +1,7 @@
 package com.server.tori.controller;
 
-import com.server.tori.dto.GuideResponseDto;
-import com.server.tori.dto.GuideTourBusResponseDto;
+import com.server.tori.dto.Guide.GuideResponseDto;
+import com.server.tori.dto.Guide.GuideTourBusResponseDto;
 import com.server.tori.entity.User;
 import com.server.tori.repository.UserRepository;
 import com.server.tori.service.GuideService;

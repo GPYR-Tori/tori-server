@@ -1,7 +1,10 @@
 package com.server.tori.service;
 
-import com.server.tori.dto.*;
-import com.server.tori.entity.Landmark;
+import com.server.tori.dto.Landmark.LandmarkLikeRequestDto;
+import com.server.tori.dto.Landmark.LandmarkLikeResponseDto;
+import com.server.tori.dto.Landmark.LandmarkValueDto;
+import com.server.tori.dto.Landmark.MyLandmarkResponseDto;
+import com.server.tori.entity.Landmark.Landmark;
 import com.server.tori.entity.Like;
 import com.server.tori.repository.LandmarkRepository;
 import com.server.tori.repository.LikeRepository;

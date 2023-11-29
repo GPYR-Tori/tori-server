@@ -1,15 +1,23 @@
 package com.server.tori.service;
 
-import com.server.tori.dto.LandmarkDetailResponseDto;
-import com.server.tori.dto.LandmarkResponseDto;
-import com.server.tori.entity.Landmark;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.server.tori.dto.Landmark.LandmarkViewDetailResponseDto;
+import com.server.tori.dto.Landmark.LandmarkViewResponseDto;
+import com.server.tori.entity.Landmark.Landmark;
+import com.server.tori.entity.Landmark.QLandmark;
+import com.server.tori.entity.Landmark.Translation;
+import com.server.tori.entity.User;
 import com.server.tori.repository.LandmarkRepository;
+import com.server.tori.repository.ReviewRepository;
+import com.server.tori.repository.TranslationRepository;
+import com.server.tori.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LandmarkService {
@@ -17,68 +25,74 @@ public class LandmarkService {
     @Autowired
     private LandmarkRepository landmarkRepository;
 
-    public List<LandmarkResponseDto> getLandmarkAll() {
-        List<Landmark> landmarkList = landmarkRepository.findAll();
-        return getLandmarkResponseDtoList(landmarkList);
-    }
+    @Autowired
+    private UserRepository userRepository;
 
-    public LandmarkDetailResponseDto getLandmarkById(Long id) {
+    @Autowired
+    private ReviewRepository reviewRepository;
+
+    @Autowired
+    private TranslationRepository translationRepository;
+
+    // 언어 기본값 설정 (상수)
+    private static final String DEFAULT_LANGUAGE = "영어";
+    private String userLanguage = DEFAULT_LANGUAGE;
+
+    public LandmarkViewDetailResponseDto getLandmarkDetail(Long id, Long userId) {
+
+        if (userId != null) {
+            Optional<User> userOptional = userRepository.findById(userId);
+
+            if (userOptional.isPresent()) {
+                User selectedUser = userOptional.get();
+                userLanguage = selectedUser.getLanguage();
+            } else {
+                return null;
+            }
+        }
+
         Optional<Landmark> landmarkOptional = landmarkRepository.findById(id);
+        Optional<Translation> translationOptional = translationRepository.findByLandmarkIdAndLanguage(id, userLanguage);
         if (landmarkOptional.isPresent()) {
-            Landmark landmark = landmarkOptional.get();
-            return getLandmarkDetailResponseDto(landmark);
+            Landmark selectedLandmark = landmarkOptional.get();
+            Translation selectedTranslation = translationOptional.get();
+
+            int reviewCount = reviewRepository.countReviewsByLandmarkId(id);
+
+            return new LandmarkViewDetailResponseDto(selectedLandmark, selectedTranslation);
         } else {
             return null;
         }
     }
 
-    public List<LandmarkResponseDto> getLandmarkByCategory(String category) {
-        List<Landmark> landmarkList = landmarkRepository.findByCategory(category);
-        return getLandmarkResponseDtoList(landmarkList);
-    }
+    public List<LandmarkViewResponseDto> getLandmarksFilter(Long userId, String category, String location) {
 
-    public List<LandmarkResponseDto> getLandmarkByLocation(String location) {
-        List<Landmark> landmarkList = landmarkRepository.findByLocation(location);
-        return getLandmarkResponseDtoList(landmarkList);
-    }
+        if (userId != null) {
+            Optional<User> userOptional = userRepository.findById(userId);
 
-    public List<LandmarkResponseDto> getLandmarkByCategoryAndLocation(String category, String location) {
-        List<Landmark> landmarkList = landmarkRepository.findByCategoryAndLocation(category, location);
-        return getLandmarkResponseDtoList(landmarkList);
-    }
-
-    // Dto 변환
-    public List<LandmarkResponseDto> getLandmarkResponseDtoList(List<Landmark> landmarkList) {
-        List<LandmarkResponseDto> dtos = new ArrayList<>();
-
-        for (Landmark landmark : landmarkList) {
-            LandmarkResponseDto dto = new LandmarkResponseDto(
-                    landmark.getId(),
-                    landmark.getName(),
-                    new ArrayList<>(landmark.getCategory()),
-                    new ArrayList<>(landmark.getLocation()),
-                    new ArrayList<>(landmark.getImage())
-            );
-
-            dtos.add(dto);
+            if (userOptional.isPresent()) {
+                User selectedUser = userOptional.get();
+                userLanguage = selectedUser.getLanguage();
+            } else {
+                return null;
+            }
         }
-        return dtos;
-    }
 
-    public LandmarkDetailResponseDto getLandmarkDetailResponseDto(Landmark landmark) {
-        LandmarkDetailResponseDto dto = new LandmarkDetailResponseDto(
-                landmark.getId(),
-                landmark.getName(),
-                landmark.getAddress(),
-                landmark.getDescription(),
-                landmark.getPrice(),
-                landmark.getPrice(),
-                landmark.getTime(),
-                new ArrayList<>(landmark.getCategory()),
-                new ArrayList<>(landmark.getLocation()),
-                new ArrayList<>(landmark.getImage())
-        );
+        QLandmark landmark = QLandmark.landmark;
+        BooleanExpression categoryPredicate = category != null ? landmark.categoryList.any().type.eq(category) : null;
+        BooleanExpression locationPredicate = location != null ? landmark.locationList.any().type.eq(location) : null;
 
-        return dto;
+        BooleanExpression combinedPredicate = Expressions.allOf(categoryPredicate, locationPredicate);
+
+        List<Landmark> landmarksList = combinedPredicate != null
+                ? (List<Landmark>) landmarkRepository.findAll(combinedPredicate)
+                : landmarkRepository.findAll();
+
+        return landmarksList.stream()
+                .map(selectedLandmark -> {
+                    Translation selectedTranslation = translationRepository.findByLandmarkAndLanguage(selectedLandmark, userLanguage);
+                    return new LandmarkViewResponseDto(selectedLandmark, selectedTranslation);
+                })
+                .collect(Collectors.toList());
     }
 }

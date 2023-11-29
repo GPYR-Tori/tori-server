@@ -1,16 +1,11 @@
 package com.server.tori.service;
 
-import com.server.tori.dto.LoginRequestDto;
-import com.server.tori.dto.LoginResponseDto;
+import com.server.tori.dto.User.LoginRequestDto;
+import com.server.tori.dto.User.LoginResponseDto;
 import com.server.tori.entity.User;
-import com.server.tori.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import javax.swing.text.html.Option;
-import java.util.Arrays;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
