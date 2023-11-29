@@ -1,13 +1,10 @@
 package com.server.tori.service;
 
-import com.server.tori.dto.*;
+import com.server.tori.dto.User.*;
 import com.server.tori.entity.User;
 import com.server.tori.repository.UserRepository;
-import org.apache.tomcat.util.buf.UEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserService {

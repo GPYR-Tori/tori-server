@@ -1,4 +1,4 @@
-package com.server.tori.dto;
+package com.server.tori.dto.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

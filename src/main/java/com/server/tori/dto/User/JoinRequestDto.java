@@ -1,6 +1,8 @@
-package com.server.tori.dto;
+package com.server.tori.dto.User;
 
-import lombok.AllArgsConstructor;
+import com.server.tori.entity.User;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,8 +10,7 @@ import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-public class MyPageEditResponseDto {
+public class JoinRequestDto {
   private Long id;
 
   private String email;
@@ -26,4 +27,7 @@ public class MyPageEditResponseDto {
 
   private String nickname;
 
+  public User toEntity() {
+    return new User(id, email, password, birthdate, gender, nation, language, nickname);
+  }
 }

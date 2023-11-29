@@ -1,4 +1,4 @@
-package com.server.tori.dto;
+package com.server.tori.dto.User;
 
 import com.server.tori.entity.User;
 import lombok.AllArgsConstructor;

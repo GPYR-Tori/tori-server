@@ -1,14 +1,17 @@
 package com.server.tori.repository;
 
-import com.server.tori.entity.Landmark;
+import com.server.tori.entity.Landmark.Landmark;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-@Repository
-public interface LandmarkRepository extends JpaRepository<Landmark, Long> {
-    List<Landmark> findByCategory(String category);
-    List<Landmark> findByLocation(String location);
-    List<Landmark> findByCategoryAndLocation(String category, String location);
+public interface LandmarkRepository extends JpaRepository<Landmark, Long>, QuerydslPredicateExecutor<Landmark> {
+    @Query("SELECT landmark FROM Landmark landmark " +
+            "WHERE 6371 * acos(cos(radians(:latitude)) * cos(radians(landmark.latitude)) * cos(radians(landmark.longitude) - radians(:longitude)) + sin(radians(:latitude)) * sin(radians(landmark.latitude))) <= 5.0")
+    List<Landmark> findLandmarksByDistance(@Param("latitude") double latitude, @Param("longitude") double longitude);
+
 }
+

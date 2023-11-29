@@ -1,9 +1,9 @@
 package com.server.tori.controller;
 
-import com.server.tori.dto.MyPageEditResponseDto;
-import com.server.tori.dto.MyPageEditViewResponseDto;
-import com.server.tori.dto.MyPageResponseDto;
-import com.server.tori.dto.MyPageEditRequestDto;
+import com.server.tori.dto.User.MyPageEditResponseDto;
+import com.server.tori.dto.User.MyPageEditViewResponseDto;
+import com.server.tori.dto.User.MyPageResponseDto;
+import com.server.tori.dto.User.MyPageEditRequestDto;
 import com.server.tori.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

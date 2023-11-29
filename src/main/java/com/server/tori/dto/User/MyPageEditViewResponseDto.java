@@ -1,19 +1,16 @@
-package com.server.tori.dto;
+package com.server.tori.dto.User;
 
-import com.server.tori.entity.User;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
-public class JoinRequestDto {
-
-  @Id
-  @GeneratedValue //
+@AllArgsConstructor
+public class MyPageEditViewResponseDto {
   private Long id;
 
   private String email;
@@ -30,8 +27,4 @@ public class JoinRequestDto {
 
   private String nickname;
 
-  public User toEntity() {
-
-    return new User(id, email, password, birthdate, gender, nation, language, nickname);
-  }
 }
