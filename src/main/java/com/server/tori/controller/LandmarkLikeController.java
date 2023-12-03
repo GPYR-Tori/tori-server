@@ -3,6 +3,7 @@ package com.server.tori.controller;
 import com.server.tori.dto.Landmark.LandmarkLikeResponseDto;
 import com.server.tori.dto.Landmark.LandmarkLikeRequestDto;
 import com.server.tori.dto.Landmark.MyLandmarkResponseDto;
+import com.server.tori.dto.LandmarkDeleteRequestDto;
 import com.server.tori.service.LandmarkLikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class LandmarkLikeController {
 
   // 여행지 좋아요 삭제
   @DeleteMapping("/landmarks/{landmark_id}/like")
-  public void landmarkLike_delete(@PathVariable Long landmark_id) {
-    landmarkLikeService.landmarkLikeDelete(landmark_id);
+  public void landmarkLike_delete(@RequestBody LandmarkDeleteRequestDto landmarkDeleteRequestDto) {
+    landmarkLikeService.landmarkLikeDelete(landmarkDeleteRequestDto);
   }
 }

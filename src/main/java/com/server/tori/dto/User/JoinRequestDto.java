@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class JoinRequestDto {
-  private Long id;
 
   private String email;
 
@@ -22,6 +21,6 @@ public class JoinRequestDto {
   private String nickname;
 
   public User toEntity() {
-    return new User(id, email, password, gender, nation, language, nickname);
+    return new User(email, password, gender, nation, language, nickname);
   }
 }

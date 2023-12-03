@@ -37,4 +37,5 @@ public class Landmark {
     @OneToMany(mappedBy = "landmark", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Translation> translationList;
+
 }

@@ -1,11 +1,9 @@
 package com.server.tori.controller;
 
 import com.server.tori.dto.Guide.GuideResponseDto;
-import com.server.tori.dto.Guide.GuideTourBusResponseDto;
 import com.server.tori.entity.User;
 import com.server.tori.repository.UserRepository;
 import com.server.tori.service.GuideService;
-import com.server.tori.service.TourBusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,14 +16,11 @@ public class GuideController {
   GuideService guideService;
   @Autowired
   UserRepository userRepository;
-  @Autowired
-  TourBusService tourBusService;
 
-
-  @GetMapping("/guide/{id}")
-  public GuideResponseDto guide(@PathVariable Long id) {
+  @GetMapping("/guide/{userId}")
+  public GuideResponseDto guide(@PathVariable Long userId) {
     // 1. 주어진 사용자 ID를 사용하여 사용자 정보를 가져옵니다.
-    User user = userRepository.findById(id).orElse(null);
+    User user = userRepository.findById(userId).orElse(null);
 
     // 2. 사용자의 언어 설정을 가져옵니다.
     // 2-1.사용자 정보가 없거나 사용자의 언어 설정이 없을 경우, 기본값으로 영어를 설정합니다.
@@ -36,13 +31,5 @@ public class GuideController {
 
     // 4. 가이드 정보를 반환합니다.
     return guideResponseDto;
-  }
-
-  @GetMapping("/guide/{id}/tourbus")
-  public GuideTourBusResponseDto tourBus(@PathVariable Long id) {
-    User user = userRepository.findById(id).orElse(null);
-    String userLanguage = (user != null && user.getLanguage() != null) ? user.getLanguage() : "english";
-    GuideTourBusResponseDto tourBusDto = tourBusService.tourBus(userLanguage);
-    return tourBusDto;
   }
 }
