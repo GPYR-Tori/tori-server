@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class GuideResponseDto {
 
+  public String content;
   private List<GuideValueDto> A_course;
   private List<GuideValueDto> B_course;
   private List<GuideValueDto> C_course;
@@ -27,11 +28,11 @@ public class GuideResponseDto {
 
   // private Map<int,List<GuideValueDto>> 확장성 생각해보기
 
-  public GuideResponseDto(List<GuideValueDto> A_course, List<GuideValueDto> B_course, List<GuideValueDto> C_course,
+  public GuideResponseDto(String content, List<GuideValueDto> A_course, List<GuideValueDto> B_course, List<GuideValueDto> C_course,
                           List<GuideValueDto> D_course, List<GuideValueDto> E_course, List<GuideValueDto> F_course,
                           List<GuideValueDto> G_course, List<GuideValueDto> H_course, List<GuideValueDto> I_course,
                           List<GuideValueDto> J_course, List<GuideValueDto> K_course, List<GuideValueDto> L_course) {
-
+    this.content = content;
     this.A_course = A_course;
     this.B_course = B_course;
     this.C_course = C_course;
@@ -46,8 +47,5 @@ public class GuideResponseDto {
     this.L_course = L_course;
 
   }
-
-
-
-  }
+}
 

@@ -1,5 +1,7 @@
 package com.server.tori.dto.Landmark;
 
+import com.server.tori.entity.Landmark.Category;
+import com.server.tori.entity.Landmark.Image;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,13 +12,13 @@ import java.util.List;
 public class LandmarkValueDto {
   public Long landmarkId;
   public String landmarkName;
-  public List<String> landmarkImage;
-  public List<String> landmarkCategori;
+  public List<Image> landmarkImage;
+  public List<Category> landmarkCategory;
 
-  public LandmarkValueDto(Long landmarkId, String landmarkName, List<String> landmarkImage, List<String> landmarkCategori) {
+  public LandmarkValueDto(Long landmarkId, String landmarkName, List<Image> landmarkImage, List<Category> landmarkCategory) {
     this.landmarkId = landmarkId;
     this.landmarkName = landmarkName;
     this.landmarkImage = landmarkImage;
-    this.landmarkCategori = landmarkCategori;
+    this.landmarkCategory = landmarkCategory;
   }
 }

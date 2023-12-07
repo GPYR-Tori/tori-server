@@ -3,6 +3,7 @@ package com.server.tori.service;
 import com.server.tori.dto.Guide.GuideResponseDto;
 import com.server.tori.dto.Guide.GuideValueDto;
 import com.server.tori.entity.Guide;
+import com.server.tori.entity.TourBus;
 import com.server.tori.repository.GuideRepository;
 import com.server.tori.repository.TourBusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,12 @@ public class GuideService {
   public GuideResponseDto guide(String userLanguage) {
     // 6. 사용자 언어에 맞는 가이드 정보를 데이터베이스에서 검색합니다.
     List<Guide> guides = guideRepository.findAllByLanguage(userLanguage);
-
+    TourBus tourBus = tourBusRepository.findByLanguage(userLanguage);
     // 7. 가이드 정보를 가지고 GuideResponseDto를 초기화합니다.
     GuideResponseDto guideResponseDto = new GuideResponseDto();
+
+    //8-1 투어버스 데이터 가져오기
+    guideResponseDto.setContent(tourBus.getContent());
 
     // 8. GuideResponseDto에 언어별 카테고리 (예: A_course, B_course 등)에 해당하는 가이드 데이터를 할당하기 위해 mapGuideValues 메서드를 호출합니다.
     guideResponseDto.setA_course(mapGuideValues(guides, "A_course"));
@@ -60,6 +64,5 @@ public class GuideService {
     }
     return guideValueDtos;
   }
-
 
 }

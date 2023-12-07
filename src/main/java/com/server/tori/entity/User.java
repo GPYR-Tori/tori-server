@@ -40,6 +40,9 @@ public class User {
   public User(String password, String language, String nickname) {
   }
 
+  public User(String email, String password, String gender, String nation, String language, String nickname) {
+  }
+
   public void patch(MyPageEditRequestDto myPageEditRequestDto) {
     if (myPageEditRequestDto.getPassword() != null) {
       this.password = myPageEditRequestDto.getPassword();
