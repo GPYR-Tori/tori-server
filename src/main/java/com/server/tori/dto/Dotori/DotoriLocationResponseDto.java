@@ -9,16 +9,16 @@ import lombok.Getter;
 @Getter
 public class DotoriLocationResponseDto {
     private Long landmarkId;
-    private String landmarkName;
-    private String landmarkAddress;
-    private double landmarkLongitude;
-    private double landmarkLatitude;
+    private String name;
+    private String address;
+    private double longitude;
+    private double latitude;
 
     public DotoriLocationResponseDto(Landmark landmark, Translation translation) {
         this.landmarkId = landmark.getId();
-        this.landmarkName = translation.getName();
-        this.landmarkAddress = translation.getAddress();
-        this.landmarkLongitude = landmark.getLongitude();
-        this.landmarkLatitude = landmark.getLatitude();
+        this.name = translation.getName();
+        this.address = translation.getAddress();
+        this.longitude = landmark.getLongitude();
+        this.latitude = landmark.getLatitude();
     }
 }

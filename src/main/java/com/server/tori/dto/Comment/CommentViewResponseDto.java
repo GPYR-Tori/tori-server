@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 public class CommentViewResponseDto {
-    private Long id;
+    private Long commentId;
     private Long userId;
     private String nickname;
     private String nation;
@@ -23,7 +23,7 @@ public class CommentViewResponseDto {
 
     public CommentViewResponseDto(Comment comment, User user) {
 
-        this.id = comment.getId();
+        this.commentId = comment.getId();
         this.userId = user.getId();
         this.nickname = user.getNickname();
         this.nation = user.getNation();

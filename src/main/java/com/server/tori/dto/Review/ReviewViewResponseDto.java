@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Getter
 public class ReviewViewResponseDto {
-    private Long id;
+    private Long reviewId;
     private Long userId;
     private String nickname;
     private String nation;
@@ -27,7 +27,7 @@ public class ReviewViewResponseDto {
 
 
     public ReviewViewResponseDto(Review review, User user) {
-        this.id = review.getId();
+        this.reviewId = review.getId();
         this.userId = user.getId();
         this.nickname = user.getNickname();
         this.nation = user.getNation();
