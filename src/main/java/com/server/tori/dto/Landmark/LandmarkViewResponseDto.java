@@ -11,14 +11,14 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Getter
 public class LandmarkViewResponseDto {
-    private Long id;
+    private Long landmarkId;
     private String name;
     private List<String> categoryList;
     private List<String> locationList;
     private List<String> imageList;
 
     public LandmarkViewResponseDto(Landmark landmark, Translation translation) {
-        this.id = landmark.getId();
+        this.landmarkId = landmark.getId();
         this.name = translation.getName();
         this.categoryList = mapCategory(landmark.getCategoryList());
         this.locationList = mapLocation(landmark.getLocationList());
