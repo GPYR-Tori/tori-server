@@ -5,6 +5,8 @@ import com.server.tori.entity.Dotori;
 import com.server.tori.entity.Landmark.Landmark;
 import com.server.tori.entity.Review;
 import com.server.tori.entity.User;
+import com.server.tori.exception.CustomException;
+import com.server.tori.exception.ErrorCode;
 import com.server.tori.repository.DotoriRepository;
 import com.server.tori.repository.LandmarkRepository;
 import com.server.tori.repository.ReviewRepository;
@@ -14,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,64 +33,92 @@ public class ReviewService {
     @Autowired
     private DotoriRepository dotoriRepository;
 
-    public ReviewWriteResponseDto postReview(Long landmarkId, ReviewWriteRequestDto reviewWriteRequestDto) {
-        Optional<User> userOptional = userRepository.findById(reviewWriteRequestDto.getUserId());
-        Optional<Landmark> landmarkOptional = landmarkRepository.findById(landmarkId);
+    public ReviewCreateResponseDto createReview(Long landmarkId, ReviewCreateRequestDto reviewCreateRequestDto) {
 
-        if (userOptional.isPresent() && landmarkOptional.isPresent()) {
-            User selectedUser = userOptional.get();
-            Landmark selectedLandmark = landmarkOptional.get();
+        User user = getUserById(reviewCreateRequestDto.getUserId());
+        Landmark landmark = getLandmarkById(landmarkId);
 
-            Dotori dotori = new Dotori(selectedUser);
-            dotoriRepository.save(dotori);
+        Dotori dotori = dotoriRepository.save(new Dotori(user));
 
-            Review review = new Review(selectedUser, selectedLandmark, dotori, reviewWriteRequestDto.getContent(), LocalDateTime.now());
-            Review savedReview = reviewRepository.save(review);
+        Review review = reviewRepository.save(
+                new Review(user, landmark, dotori,
+                        reviewCreateRequestDto.getContent(), LocalDateTime.now()));
 
-            return new ReviewWriteResponseDto(selectedUser, savedReview);
-        }
-        return null;
+        return new ReviewCreateResponseDto(user, review);
+
     }
 
-    public List<ReviewViewResponseDto> getReviews() {
-        List<Review> reviewsList = reviewRepository.findAll();
+    public List<ReviewGetResponseDto> getReview(Long landmarkId) {
 
-        return reviewsList.stream()
-                .map(review -> new ReviewViewResponseDto(review, review.getUser()))
+        Landmark landmark = getLandmarkById(landmarkId);
+
+        List<Review> reviewList = reviewRepository.findByLandmark(landmark);
+
+        return reviewList.stream()
+                .map(review -> {
+                    checkReviewInLandmark(landmarkId, review);
+                    return new ReviewGetResponseDto(review, review.getUser());
+                })
                 .collect(Collectors.toList());
+
     }
 
-    public ReviewEditResponseDto patchReview(Long landmarkId, Long id, ReviewEditRequestDto reviewEditRequestDto) {
-        Optional<Review> reviewOptional = reviewRepository.findById(id);
-        Optional<User> userOptional = userRepository.findById(reviewEditRequestDto.getUserId());
-        Optional<Landmark> landmarkOptional = landmarkRepository.findById(landmarkId);
+    public ReviewUpdateResponseDto updateReview(Long landmarkId, Long id, ReviewUpdateRequestDto reviewUpdateRequestDto) {
 
-        if (reviewOptional.isPresent() && userOptional.isPresent() && landmarkOptional.isPresent()) {
-            Review review = reviewOptional.get();
-            User selectedUser = userOptional.get();
+        Review review = getReviewById(id);
+        User user = getUserById(reviewUpdateRequestDto.getUserId());
+        Landmark landmark = getLandmarkById(landmarkId);
 
-            review.patchContent(reviewEditRequestDto.getContent());
-            review.patchModifyDate();
+        checkUserInReview(reviewUpdateRequestDto.getUserId(), review);
+        checkReviewInLandmark(landmarkId, review);
 
-            Review afterReview = reviewRepository.save(review);
+        review.patchContent(reviewUpdateRequestDto.getContent());
+        review.patchModifyDate();
 
-            return new ReviewEditResponseDto(selectedUser, afterReview);
-        }
-        return null;
+        reviewRepository.save(review);
+
+        return new ReviewUpdateResponseDto(user, review);
+
     }
 
     public String deleteReview(Long landmarkId, Long id, ReviewDeleteRequestDto reviewDeleteRequestDto) {
-        Optional<Review> reviewOptional = reviewRepository.findById(id);
-        Optional<User> userOptional = userRepository.findById(reviewDeleteRequestDto.getUserId());
-        Optional<Landmark> landmarkOptional = landmarkRepository.findById(landmarkId);
 
-        if (reviewOptional.isPresent() && userOptional.isPresent() && landmarkOptional.isPresent()) {
-            Review review = reviewOptional.get();
+        Review review = getReviewById(id);
+        User user = getUserById(reviewDeleteRequestDto.getUserId());
+        Landmark landmark = getLandmarkById(landmarkId);
 
-            reviewRepository.delete(review);
+        checkUserInReview(reviewDeleteRequestDto.getUserId(), review);
+        checkReviewInLandmark(landmarkId, review);
 
-            return "success";
-        }
-        return "fail";
+        reviewRepository.delete(review);
+
+        return "리뷰가 성공적으로 삭제되었습니다.";
+
     }
+
+    private User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    }
+
+    private Landmark getLandmarkById(Long landmarkId) {
+        return landmarkRepository.findById(landmarkId)
+                .orElseThrow(() -> new CustomException(ErrorCode.LANDMARK_NOT_FOUND));
+    }
+
+    private Review getReviewById(Long id) {
+        return reviewRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
+    }
+
+    // 해당 landmark에 속한 review인지 확인
+    private static void checkReviewInLandmark(Long landmarkId, Review review) {
+        if (!review.getLandmark().getId().equals(landmarkId)) throw new CustomException(ErrorCode.NOT_IN_LANDMARK_REVIEW);
+    }
+
+    // 해당 review에 접근 권한이 있는 user인지 확인
+    private static void checkUserInReview(Long userId, Review review) {
+        if (!review.getUser().getId().equals(userId)) throw new CustomException(ErrorCode.FORBIDDEN_REVIEW_USER);
+    }
+
 }

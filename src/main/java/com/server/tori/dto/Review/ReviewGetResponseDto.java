@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Getter
-public class ReviewViewResponseDto {
+public class ReviewGetResponseDto {
     private Long reviewId;
     private Long userId;
     private String nickname;
@@ -26,7 +26,7 @@ public class ReviewViewResponseDto {
     private LocalDateTime createDate;
 
 
-    public ReviewViewResponseDto(Review review, User user) {
+    public ReviewGetResponseDto(Review review, User user) {
         this.reviewId = review.getId();
         this.userId = user.getId();
         this.nickname = user.getNickname();
