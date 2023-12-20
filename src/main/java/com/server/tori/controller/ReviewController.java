@@ -17,8 +17,8 @@ public class ReviewController {
 
     // 리뷰 생성
     @PostMapping
-    public ResponseEntity<ReviewCreateResponseDto> createReview(@PathVariable("landmarkId") Long landmarkId, @RequestBody ReviewCreateRequestDto reviewCreateRequestDto){
-        return ResponseEntity.ok().body(reviewService.createReview(landmarkId, reviewCreateRequestDto));
+    public ResponseEntity<ReviewPostResponseDto> createReview(@PathVariable("landmarkId") Long landmarkId, @RequestBody ReviewPostRequestDto reviewPostRequestDto){
+        return ResponseEntity.ok().body(reviewService.createReview(landmarkId, reviewPostRequestDto));
     }
 
     // 리뷰 조회 (+ 댓글 조회 함께)
@@ -29,14 +29,13 @@ public class ReviewController {
 
     // 리뷰 수정
     @PatchMapping("/{reviewId}")
-    public ResponseEntity<ReviewUpdateResponseDto> updateReview(@PathVariable("landmarkId") Long landmarkId, @PathVariable("reviewId") Long id, @RequestBody ReviewUpdateRequestDto reviewUpdateRequestDto){
-        return ResponseEntity.ok().body(reviewService.updateReview(landmarkId, id, reviewUpdateRequestDto));
+    public ResponseEntity<ReviewPatchResponseDto> updateReview(@PathVariable("landmarkId") Long landmarkId, @PathVariable("reviewId") Long id, @RequestBody ReviewPatchRequestDto reviewPatchRequestDto){
+        return ResponseEntity.ok().body(reviewService.updateReview(landmarkId, id, reviewPatchRequestDto));
     }
 
     // 리뷰 삭제
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<String> deleteReview(@PathVariable("landmarkId") Long landmarkId, @PathVariable("reviewId") Long id, @RequestBody ReviewDeleteRequestDto reviewDeleteRequestDto){
         return ResponseEntity.ok().body(reviewService.deleteReview(landmarkId, id, reviewDeleteRequestDto));
-
     }
 }

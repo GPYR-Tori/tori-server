@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class ReviewCreateRequestDto {
+public class ReviewPostRequestDto {
     private Long userId;
     private String content;
 }

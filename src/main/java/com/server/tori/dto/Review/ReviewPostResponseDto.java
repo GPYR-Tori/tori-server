@@ -10,20 +10,22 @@ import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Getter
-public class ReviewUpdateResponseDto {
+public class ReviewPostResponseDto {
+    private Long reviewId;
     private Long userId;
     private String nickname;
     private String nation;
     private String content;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime modifyDate;
+    private LocalDateTime createDate;
 
-    public ReviewUpdateResponseDto(User user, Review review) {
+    public ReviewPostResponseDto(User user, Review review) {
+        this.reviewId = review.getId();
         this.userId = user.getId();
         this.nickname = user.getNickname();
         this.nation = user.getNation();
         this.content = review.getContent();
-        this.modifyDate = review.getModifyDate();
+        this.createDate = review.getCreateDate();
     }
 }
