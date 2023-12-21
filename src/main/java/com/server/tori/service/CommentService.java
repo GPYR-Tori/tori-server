@@ -25,37 +25,37 @@ public class CommentService {
     @Autowired
     private UserRepository userRepository;
 
-    public CommentWriteResponseDto postComment(Long reviewId, CommentWriteRequestDto commentWriteRequestDto) {
-        Optional<User> userOptional = userRepository.findById(commentWriteRequestDto.getUserId());
+    public CommentPostResponseDto createComment(Long reviewId, CommentPostRequestDto commentPostRequestDto) {
+        Optional<User> userOptional = userRepository.findById(commentPostRequestDto.getUserId());
         Optional<Review> ReviewOptional = reviewRepository.findById(reviewId);
 
         if (userOptional.isPresent() && ReviewOptional.isPresent()) {
             User selectedUser = userOptional.get();
             Review selectedReview = ReviewOptional.get();
 
-            Comment comment = new Comment(selectedUser, selectedReview, commentWriteRequestDto.getContent(), LocalDateTime.now());
+            Comment comment = new Comment(selectedUser, selectedReview, commentPostRequestDto.getContent(), LocalDateTime.now());
             Comment savedComment = commentRepository.save(comment);
 
-            return new CommentWriteResponseDto(selectedUser, savedComment);
+            return new CommentPostResponseDto(selectedUser, savedComment);
         }
         return null;
     }
 
-    public CommentEditResponseDto patchComment(Long reviewId, Long id, CommentEditRequestDto commentEditRequestDto) {
+    public CommentPatchResponseDto updateComment(Long reviewId, Long id, CommentPatchRequestDto commentPatchRequestDto) {
         Optional<Comment> commentOptional = commentRepository.findById(id);
-        Optional<User> userOptional = userRepository.findById(commentEditRequestDto.getUserId());
+        Optional<User> userOptional = userRepository.findById(commentPatchRequestDto.getUserId());
         Optional<Review> reviewOptional = reviewRepository.findById(reviewId);
 
         if (commentOptional.isPresent() && userOptional.isPresent() && reviewOptional.isPresent()) {
             Comment comment = commentOptional.get();
             User selectedUser = userOptional.get();
 
-            comment.patchContent(commentEditRequestDto.getContent());
+            comment.patchContent(commentPatchRequestDto.getContent());
             comment.patchModifyDate();
 
             Comment afterComment = commentRepository.save(comment);
 
-            return new CommentEditResponseDto(selectedUser, afterComment);
+            return new CommentPatchResponseDto(selectedUser, afterComment);
         }
         return null;
     }
