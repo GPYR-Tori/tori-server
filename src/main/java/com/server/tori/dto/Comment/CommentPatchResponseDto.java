@@ -8,26 +8,22 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-
 @AllArgsConstructor
 @Getter
-public class CommentViewResponseDto {
-    private Long commentId;
+public class CommentPatchResponseDto {
     private Long userId;
     private String nickname;
     private String nation;
     private String content;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime createDate;
+    private LocalDateTime modifyDate;
 
-    public CommentViewResponseDto(Comment comment, User user) {
-
-        this.commentId = comment.getId();
+    public CommentPatchResponseDto(User user, Comment comment) {
         this.userId = user.getId();
         this.nickname = user.getNickname();
         this.nation = user.getNation();
         this.content = comment.getContent();
-        this.createDate = comment.getCreateDate();
+        this.modifyDate = comment.getModifyDate();
     }
 }
