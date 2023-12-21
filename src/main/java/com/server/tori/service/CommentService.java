@@ -4,6 +4,8 @@ import com.server.tori.dto.Comment.*;
 import com.server.tori.entity.Comment;
 import com.server.tori.entity.Review;
 import com.server.tori.entity.User;
+import com.server.tori.exception.CustomException;
+import com.server.tori.exception.ErrorCode;
 import com.server.tori.repository.CommentRepository;
 import com.server.tori.repository.ReviewRepository;
 import com.server.tori.repository.UserRepository;
@@ -11,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 public class CommentService {
@@ -26,52 +27,72 @@ public class CommentService {
     private UserRepository userRepository;
 
     public CommentPostResponseDto createComment(Long reviewId, CommentPostRequestDto commentPostRequestDto) {
-        Optional<User> userOptional = userRepository.findById(commentPostRequestDto.getUserId());
-        Optional<Review> ReviewOptional = reviewRepository.findById(reviewId);
 
-        if (userOptional.isPresent() && ReviewOptional.isPresent()) {
-            User selectedUser = userOptional.get();
-            Review selectedReview = ReviewOptional.get();
+        User user = getUserById(commentPostRequestDto.getUserId());
+        Review review = getReviewById(reviewId);
 
-            Comment comment = new Comment(selectedUser, selectedReview, commentPostRequestDto.getContent(), LocalDateTime.now());
-            Comment savedComment = commentRepository.save(comment);
+        Comment comment = commentRepository.save(
+                new Comment(user, review, commentPostRequestDto.getContent(), LocalDateTime.now()));
 
-            return new CommentPostResponseDto(selectedUser, savedComment);
-        }
-        return null;
+        return new CommentPostResponseDto(user, comment);
+
     }
 
     public CommentPatchResponseDto updateComment(Long reviewId, Long id, CommentPatchRequestDto commentPatchRequestDto) {
-        Optional<Comment> commentOptional = commentRepository.findById(id);
-        Optional<User> userOptional = userRepository.findById(commentPatchRequestDto.getUserId());
-        Optional<Review> reviewOptional = reviewRepository.findById(reviewId);
 
-        if (commentOptional.isPresent() && userOptional.isPresent() && reviewOptional.isPresent()) {
-            Comment comment = commentOptional.get();
-            User selectedUser = userOptional.get();
+        Comment comment = getCommentById(id);
+        User user = getUserById(commentPatchRequestDto.getUserId());
+        Review review = getReviewById(reviewId);
 
-            comment.patchContent(commentPatchRequestDto.getContent());
-            comment.patchModifyDate();
+        checkUserInComment(commentPatchRequestDto.getUserId(), comment);
+        checkCommentInReview(reviewId, comment);
 
-            Comment afterComment = commentRepository.save(comment);
+        comment.patchContent(commentPatchRequestDto.getContent());
+        comment.patchModifyDate();
 
-            return new CommentPatchResponseDto(selectedUser, afterComment);
-        }
-        return null;
+        commentRepository.save(comment);
+
+        return new CommentPatchResponseDto(user, comment);
+
     }
 
     public String deleteComment(Long reviewId, Long id, CommentDeleteRequestDto commentDeleteRequestDto) {
-        Optional<Comment> commentOptional = commentRepository.findById(id);
-        Optional<User> userOptional = userRepository.findById(commentDeleteRequestDto.getUserId());
-        Optional<Review> reviewOptional = reviewRepository.findById(reviewId);
 
-        if (commentOptional.isPresent() && userOptional.isPresent() && reviewOptional.isPresent()) {
-            Comment comment = commentOptional.get();
+        Comment comment = getCommentById(id);
+        User user = getUserById(commentDeleteRequestDto.getUserId());
+        Review review = getReviewById(reviewId);
 
-            commentRepository.delete(comment);
+        checkUserInComment(commentDeleteRequestDto.getUserId(), comment);
+        checkCommentInReview(reviewId, comment);
 
-            return "success";
-        }
-        return "fail";
+        commentRepository.delete(comment);
+
+        return "댓글이 성공적으로 삭제되었습니다.";
+
+    }
+
+    private User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    }
+
+    private Review getReviewById(Long reviewId) {
+        return reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
+    }
+
+    private Comment getCommentById(Long id) {
+        return commentRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+    }
+
+    // 해당 review에 속한 comment인지 확인
+    private static void checkCommentInReview(Long reviewId, Comment comment) {
+        if (!comment.getReview().getId().equals(reviewId)) throw new CustomException(ErrorCode.NOT_IN_REVIEW_COMMENT);
+    }
+
+    // 해당 comment에 접근 권한이 있는 user인지 확인
+    private static void checkUserInComment(Long userId, Comment comment) {
+        if (!comment.getUser().getId().equals(userId)) throw new CustomException(ErrorCode.FORBIDDEN_COMMENT_USER);
     }
 }
