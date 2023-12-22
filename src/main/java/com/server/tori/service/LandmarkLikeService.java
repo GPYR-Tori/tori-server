@@ -4,7 +4,7 @@ import com.server.tori.dto.Landmark.LandmarkLikeRequestDto;
 import com.server.tori.dto.Landmark.LandmarkLikeResponseDto;
 import com.server.tori.dto.Landmark.LandmarkValueDto;
 import com.server.tori.dto.Landmark.MyLandmarkResponseDto;
-import com.server.tori.dto.LandmarkDeleteRequestDto;
+import com.server.tori.dto.Landmark.LandmarkDeleteRequestDto;
 import com.server.tori.entity.Landmark.Landmark;
 import com.server.tori.entity.Landmark.Translation;
 import com.server.tori.entity.Like;
