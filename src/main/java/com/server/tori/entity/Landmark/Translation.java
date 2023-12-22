@@ -27,11 +27,5 @@ public class Translation {
 
     private String description;
 
-    private String price;
-
-    private String time;
-
-    private String site;
-
     private String language;
 }

@@ -22,6 +22,14 @@ public class Landmark {
 
     private Double longitude;
 
+    private String price;
+
+    private String time;
+
+    private String site;
+
+    private String phoneNum;
+
     @OneToMany(mappedBy = "landmark", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Category> categoryList;

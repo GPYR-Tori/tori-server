@@ -32,6 +32,14 @@ public class QLandmark extends EntityPathBase<Landmark> {
 
     public final NumberPath<Double> longitude = createNumber("longitude", Double.class);
 
+    public final StringPath phoneNum = createString("phoneNum");
+
+    public final StringPath price = createString("price");
+
+    public final StringPath site = createString("site");
+
+    public final StringPath time = createString("time");
+
     public final ListPath<Translation, QTranslation> translationList = this.<Translation, QTranslation>createList("translationList", Translation.class, QTranslation.class, PathInits.DIRECT2);
 
     public QLandmark(String variable) {
