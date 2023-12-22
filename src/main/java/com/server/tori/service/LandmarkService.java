@@ -2,21 +2,20 @@ package com.server.tori.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
-import com.server.tori.dto.Landmark.LandmarkViewDetailResponseDto;
-import com.server.tori.dto.Landmark.LandmarkViewResponseDto;
+import com.server.tori.dto.Landmark.LandmarkDetailGetResponseDto;
+import com.server.tori.dto.Landmark.LandmarkGetResponseDto;
 import com.server.tori.entity.Landmark.Landmark;
 import com.server.tori.entity.Landmark.QLandmark;
 import com.server.tori.entity.Landmark.Translation;
-import com.server.tori.entity.User;
+import com.server.tori.exception.CustomException;
+import com.server.tori.exception.ErrorCode;
 import com.server.tori.repository.LandmarkRepository;
-import com.server.tori.repository.ReviewRepository;
 import com.server.tori.repository.TranslationRepository;
 import com.server.tori.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,70 +28,55 @@ public class LandmarkService {
     private UserRepository userRepository;
 
     @Autowired
-    private ReviewRepository reviewRepository;
-
-    @Autowired
     private TranslationRepository translationRepository;
 
     // 언어 기본값 설정 (상수)
     private static final String DEFAULT_LANGUAGE = "영어";
     private String userLanguage = DEFAULT_LANGUAGE;
 
-    public LandmarkViewDetailResponseDto getLandmarkDetail(Long id, Long userId) {
+    public LandmarkDetailGetResponseDto getLandmarkDetail(Long id, Long userId) {
 
-        if (userId != null) {
-            Optional<User> userOptional = userRepository.findById(userId);
+        setUserLanguage(userId);
 
-            if (userOptional.isPresent()) {
-                User selectedUser = userOptional.get();
-                userLanguage = selectedUser.getLanguage();
-            } else {
-                return null;
-            }
-        }
+        Landmark landmark = landmarkRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.LANDMARK_NOT_FOUND));
 
-        Optional<Landmark> landmarkOptional = landmarkRepository.findById(id);
-        Optional<Translation> translationOptional = translationRepository.findByLandmarkIdAndLanguage(id, userLanguage);
-        if (landmarkOptional.isPresent()) {
-            Landmark selectedLandmark = landmarkOptional.get();
-            Translation selectedTranslation = translationOptional.get();
+        // 만약 회원 설정 언어에 따른 번역 정보가 저장되어 있지 않다면, 빈 객체를 보내줌
+        Translation translation = translationRepository.findByLandmarkIdAndLanguage(id, userLanguage)
+                .orElse(new Translation());
 
-            int reviewCount = reviewRepository.countReviewsByLandmarkId(id);
+        return new LandmarkDetailGetResponseDto(landmark, translation);
 
-            return new LandmarkViewDetailResponseDto(selectedLandmark, selectedTranslation);
-        } else {
-            return null;
-        }
     }
 
-    public List<LandmarkViewResponseDto> getLandmarksFilter(Long userId, String category, String location) {
+    public List<LandmarkGetResponseDto> getLandmarkByCategory(Long userId, String category, String location) {
 
-        if (userId != null) {
-            Optional<User> userOptional = userRepository.findById(userId);
+        setUserLanguage(userId);
 
-            if (userOptional.isPresent()) {
-                User selectedUser = userOptional.get();
-                userLanguage = selectedUser.getLanguage();
-            } else {
-                return null;
-            }
-        }
-
-        QLandmark landmark = QLandmark.landmark;
-        BooleanExpression categoryPredicate = category != null ? landmark.categoryList.any().type.eq(category) : null;
-        BooleanExpression locationPredicate = location != null ? landmark.locationList.any().type.eq(location) : null;
+        QLandmark qLandmark = QLandmark.landmark;
+        BooleanExpression categoryPredicate = category != null ? qLandmark.categoryList.any().type.eq(category) : null;
+        BooleanExpression locationPredicate = location != null ? qLandmark.locationList.any().type.eq(location) : null;
 
         BooleanExpression combinedPredicate = Expressions.allOf(categoryPredicate, locationPredicate);
 
-        List<Landmark> landmarksList = combinedPredicate != null
+        List<Landmark> landmarkList = combinedPredicate != null
                 ? (List<Landmark>) landmarkRepository.findAll(combinedPredicate)
                 : landmarkRepository.findAll();
 
-        return landmarksList.stream()
-                .map(selectedLandmark -> {
-                    Translation selectedTranslation = translationRepository.findByLandmarkAndLanguage(selectedLandmark, userLanguage);
-                    return new LandmarkViewResponseDto(selectedLandmark, selectedTranslation);
+        return landmarkList.stream()
+                .map(landmark -> {
+                    Translation translation = translationRepository.findByLandmarkIdAndLanguage(landmark.getId(), userLanguage)
+                            .orElse(new Translation());
+                    return new LandmarkGetResponseDto(landmark, translation);
                 })
                 .collect(Collectors.toList());
+    }
+
+    // 사용자 언어 설정
+    private void setUserLanguage(Long userId) {
+        if (userId != null) {
+            userRepository.findById(userId)
+                    .ifPresent(user -> userLanguage = user.getLanguage());
+        }
     }
 }
