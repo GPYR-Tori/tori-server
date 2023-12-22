@@ -1,7 +1,7 @@
 package com.server.tori.dto.Review;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.server.tori.dto.Comment.CommentViewResponseDto;
+import com.server.tori.dto.Comment.CommentGetResponseDto;
 import com.server.tori.entity.Comment;
 import com.server.tori.entity.Review;
 import com.server.tori.entity.User;
@@ -20,7 +20,7 @@ public class ReviewGetResponseDto {
     private String nickname;
     private String nation;
     private String content;
-    private List<CommentViewResponseDto> commentList;
+    private List<CommentGetResponseDto> commentList;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createDate;
@@ -32,13 +32,13 @@ public class ReviewGetResponseDto {
         this.nickname = user.getNickname();
         this.nation = user.getNation();
         this.content = review.getContent();
-        this.commentList = CommentViewResponseDtoList(review.getCommentList());
+        this.commentList = CommentGetResponseDtoList(review.getCommentList());
         this.createDate = review.getCreateDate();
     }
 
-    private List<CommentViewResponseDto> CommentViewResponseDtoList(List<Comment> commentList) {
+    private List<CommentGetResponseDto> CommentGetResponseDtoList(List<Comment> commentList) {
         return commentList.stream()
-                .map(comment-> new CommentViewResponseDto(comment, comment.getUser()))
+                .map(comment-> new CommentGetResponseDto(comment, comment.getUser()))
                 .collect(Collectors.toList());
     }
 }

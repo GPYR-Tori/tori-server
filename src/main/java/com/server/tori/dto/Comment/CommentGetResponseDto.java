@@ -8,9 +8,10 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+
 @AllArgsConstructor
 @Getter
-public class CommentWriteResponseDto {
+public class CommentGetResponseDto {
     private Long commentId;
     private Long userId;
     private String nickname;
@@ -20,7 +21,8 @@ public class CommentWriteResponseDto {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createDate;
 
-    public CommentWriteResponseDto(User user, Comment comment) {
+    public CommentGetResponseDto(Comment comment, User user) {
+
         this.commentId = comment.getId();
         this.userId = user.getId();
         this.nickname = user.getNickname();

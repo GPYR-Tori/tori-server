@@ -20,6 +20,7 @@ public enum ErrorCode {
     FORBIDDEN_REVIEW_USER(FORBIDDEN, "리뷰 권한이 없는 사용자입니다."),
     FORBIDDEN_COMMENT_USER(FORBIDDEN, "댓글 권한이 없는 사용자입니다."),
     NOT_IN_LANDMARK_REVIEW(FORBIDDEN, "해당 여행지에 속한 후기글이 아닙니다."),
+    NOT_IN_REVIEW_COMMENT(FORBIDDEN, "해당 리뷰에 속한 댓글이 아닙니다."),
 
     // 404 NOT_FOUND: 잘못된 리소스 접근
     MEMBER_NOT_FOUND(NOT_FOUND, "해당 회원 정보를 찾을 수 없습니다."),

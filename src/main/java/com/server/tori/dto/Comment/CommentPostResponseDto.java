@@ -10,20 +10,22 @@ import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Getter
-public class CommentEditResponseDto {
+public class CommentPostResponseDto {
+    private Long commentId;
     private Long userId;
     private String nickname;
     private String nation;
     private String content;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime modifyDate;
+    private LocalDateTime createDate;
 
-    public CommentEditResponseDto(User user, Comment comment) {
+    public CommentPostResponseDto(User user, Comment comment) {
+        this.commentId = comment.getId();
         this.userId = user.getId();
         this.nickname = user.getNickname();
         this.nation = user.getNation();
         this.content = comment.getContent();
-        this.modifyDate = comment.getModifyDate();
+        this.createDate = comment.getCreateDate();
     }
 }
