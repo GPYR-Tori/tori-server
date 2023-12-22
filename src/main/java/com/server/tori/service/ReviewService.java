@@ -33,23 +33,20 @@ public class ReviewService {
     @Autowired
     private DotoriRepository dotoriRepository;
 
-    public ReviewCreateResponseDto createReview(Long landmarkId, ReviewCreateRequestDto reviewCreateRequestDto) {
-
-        User user = getUserById(reviewCreateRequestDto.getUserId());
+    public ReviewPostResponseDto createReview(Long landmarkId, ReviewPostRequestDto reviewPostRequestDto) {
+        User user = getUserById(reviewPostRequestDto.getUserId());
         Landmark landmark = getLandmarkById(landmarkId);
 
         Dotori dotori = dotoriRepository.save(new Dotori(user));
 
         Review review = reviewRepository.save(
                 new Review(user, landmark, dotori,
-                        reviewCreateRequestDto.getContent(), LocalDateTime.now()));
+                        reviewPostRequestDto.getContent(), LocalDateTime.now()));
 
-        return new ReviewCreateResponseDto(user, review);
-
+        return new ReviewPostResponseDto(user, review);
     }
 
     public List<ReviewGetResponseDto> getReview(Long landmarkId) {
-
         Landmark landmark = getLandmarkById(landmarkId);
 
         List<Review> reviewList = reviewRepository.findByLandmark(landmark);
@@ -60,29 +57,25 @@ public class ReviewService {
                     return new ReviewGetResponseDto(review, review.getUser());
                 })
                 .collect(Collectors.toList());
-
     }
 
-    public ReviewUpdateResponseDto updateReview(Long landmarkId, Long id, ReviewUpdateRequestDto reviewUpdateRequestDto) {
-
+    public ReviewPatchResponseDto updateReview(Long landmarkId, Long id, ReviewPatchRequestDto reviewPatchRequestDto) {
         Review review = getReviewById(id);
-        User user = getUserById(reviewUpdateRequestDto.getUserId());
+        User user = getUserById(reviewPatchRequestDto.getUserId());
         Landmark landmark = getLandmarkById(landmarkId);
 
-        checkUserInReview(reviewUpdateRequestDto.getUserId(), review);
+        checkUserInReview(reviewPatchRequestDto.getUserId(), review);
         checkReviewInLandmark(landmarkId, review);
 
-        review.patchContent(reviewUpdateRequestDto.getContent());
+        review.patchContent(reviewPatchRequestDto.getContent());
         review.patchModifyDate();
 
         reviewRepository.save(review);
 
-        return new ReviewUpdateResponseDto(user, review);
-
+        return new ReviewPatchResponseDto(user, review);
     }
 
     public String deleteReview(Long landmarkId, Long id, ReviewDeleteRequestDto reviewDeleteRequestDto) {
-
         Review review = getReviewById(id);
         User user = getUserById(reviewDeleteRequestDto.getUserId());
         Landmark landmark = getLandmarkById(landmarkId);
@@ -93,7 +86,6 @@ public class ReviewService {
         reviewRepository.delete(review);
 
         return "리뷰가 성공적으로 삭제되었습니다.";
-
     }
 
     private User getUserById(Long userId) {
