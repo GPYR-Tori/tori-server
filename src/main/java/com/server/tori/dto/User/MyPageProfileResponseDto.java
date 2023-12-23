@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MyPageEditViewResponseDto {
+public class MyPageProfileResponseDto {
   private Long id;
 
   private String email;

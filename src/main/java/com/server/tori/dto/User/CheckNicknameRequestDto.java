@@ -5,5 +5,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class MyPageEditViewRequestDto {
+public class CheckNicknameRequestDto {
+  public String nickname;
 }

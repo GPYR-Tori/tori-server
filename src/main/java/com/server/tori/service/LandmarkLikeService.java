@@ -50,7 +50,9 @@ public class LandmarkLikeService {
       landmarkValueDtos.add(new LandmarkValueDto(likeLanguage.getId(), likeLanguage.getName(), likeUser.getImageList(), likeUser.getCategoryList()));
     }
 
-    return new MyLandmarkResponseDto(landmarkValueDtos, user_Id);
+    // 좋아요한 여행지들의 숫자를 total 변수에 담는다.
+    int total = userLike.size();
+    return new MyLandmarkResponseDto(total,landmarkValueDtos);
   }
 
   public void landmarkLikeDelete(LandmarkDeleteRequestDto landmarkDeleteRequestDto) {

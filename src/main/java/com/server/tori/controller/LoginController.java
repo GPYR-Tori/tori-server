@@ -32,8 +32,13 @@ public class LoginController {
   @PostMapping("/join")
 // 1. request로 들어온 필드들로 User user = new User (유저 정보값) 넣고 userRepository.save(user)하고 리턴
   public ResponseEntity<JoinResponseDto> join(@RequestBody JoinRequestDto joinRequestDto) {
-    JoinResponseDto joinDto = userService.join(joinRequestDto);
-    return ResponseEntity.status(HttpStatus.OK).body(joinDto);
+    if (joinRequestDto.getPassword().length() >= 8) {
+      JoinResponseDto joinDto = userService.join(joinRequestDto);
+      return ResponseEntity.status(HttpStatus.OK).body(joinDto);
+    } else {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(new JoinResponseDto("비밀번호는 8자 이상이어야 합니다."));
+    }
   }
 
   // 이메일 중복확인
@@ -43,6 +48,13 @@ public class LoginController {
     CheckEmailResponseDto checkEmailDto = loginService.checkEmail(checkEmailRequestDto);
     return ResponseEntity.status(HttpStatus.OK).body(checkEmailDto);
 
+  }
+  // 닉네임 중복확인
+  @PostMapping("/check/nickname")
+// 2. findByEmail(dto.email)해서 조회되는 User객체가 있으면 throw new RuntimeException() 없으면 동일한 이메일이 없다는 것이므로 응답값 리턴
+  public ResponseEntity<CheckNicknameResponseDto> checkNickname(@RequestBody CheckNicknameRequestDto checkNicknameRequestDto) {
+    CheckNicknameResponseDto checkEmailDto = loginService.checkNickname(checkNicknameRequestDto);
+    return ResponseEntity.status(HttpStatus.OK).body(checkEmailDto);
   }
 
 }

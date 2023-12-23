@@ -1,9 +1,6 @@
 package com.server.tori.service;
 
-import com.server.tori.dto.User.CheckEmailRequestDto;
-import com.server.tori.dto.User.LoginRequestDto;
-import com.server.tori.dto.User.CheckEmailResponseDto;
-import com.server.tori.dto.User.LoginResponseDto;
+import com.server.tori.dto.User.*;
 import com.server.tori.entity.User;
 import com.server.tori.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,4 +29,10 @@ public class LoginService {
     return new CheckEmailResponseDto(checkEmailRequestDto.getEmail());
   }
 
+  public CheckNicknameResponseDto checkNickname(CheckNicknameRequestDto checkNicknameRequestDto) {
+    if (userRepository.findByNickname(checkNicknameRequestDto.getNickname()).isPresent()) {
+      throw new RuntimeException("중복된 닉네임입니다.");
+    }
+    return new CheckNicknameResponseDto(checkNicknameRequestDto.getNickname());
+  }
 }

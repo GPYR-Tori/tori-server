@@ -9,12 +9,13 @@ import java.util.List;
 @Getter
 @Setter
 public class MyLandmarkResponseDto {
+  public int total;
   public List<LandmarkValueDto> landmarks;
-  public Long userId;
 
-  public MyLandmarkResponseDto(List<LandmarkValueDto> landmarks, Long userId) {
+  public MyLandmarkResponseDto(int total,List<LandmarkValueDto> landmarks) {
     this.landmarks = landmarks;
-    this.userId = userId;
+    this.total = total;
+
   }
 
 }

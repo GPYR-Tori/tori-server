@@ -22,4 +22,6 @@ public class JoinResponseDto {
   private String nickname;
 
 
+  public JoinResponseDto(String s) {
+  }
 }

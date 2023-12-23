@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 @Table(name = "userinfo")
 @Entity
 @Getter
+@Setter
 public class User {
 
   @Id
@@ -37,7 +39,7 @@ public class User {
   public User(Long id, String email, String password) {
   }
 
-  public User(String password, String language, String nickname) {
+  public User(String password, String gender, String nation ,String language, String nickname) {
   }
 
   public User(String email, String password, String gender, String nation, String language, String nickname) {
