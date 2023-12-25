@@ -1,7 +1,6 @@
 package com.server.tori.dto.Landmark;
 
 import com.server.tori.entity.Landmark.*;
-import com.server.tori.entity.Review;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,24 +9,16 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Getter
-public class LandmarkViewDetailResponseDto {
+public class LandmarkGetResponseDto {
+    private Long landmarkId;
     private String name;
-    private String address;
-    private String description;
-    private String price;
-    private String time;
-    private String site;
     private List<String> categoryList;
     private List<String> locationList;
     private List<String> imageList;
 
-    public LandmarkViewDetailResponseDto(Landmark landmark, Translation translation) {
+    public LandmarkGetResponseDto(Landmark landmark, Translation translation) {
+        this.landmarkId = landmark.getId();
         this.name = translation.getName();
-        this.address = translation.getAddress();
-        this.description = translation.getDescription();
-        this.price = translation.getPrice();
-        this.time = translation.getTime();
-        this.site = translation.getSite();
         this.categoryList = mapCategory(landmark.getCategoryList());
         this.locationList = mapLocation(landmark.getLocationList());
         this.imageList = mapImage(landmark.getImageList());
@@ -49,9 +40,5 @@ public class LandmarkViewDetailResponseDto {
         return ImageList.stream()
                 .map(Image::getPath)
                 .collect(Collectors.toList());
-    }
-
-    private int calculateReviewCount(List<Review> reviewList) {
-        return reviewList.size();
     }
 }

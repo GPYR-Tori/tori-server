@@ -34,12 +34,6 @@ public class QTranslation extends EntityPathBase<Translation> {
 
     public final StringPath name = createString("name");
 
-    public final StringPath price = createString("price");
-
-    public final StringPath site = createString("site");
-
-    public final StringPath time = createString("time");
-
     public QTranslation(String variable) {
         this(Translation.class, forVariable(variable), INITS);
     }
