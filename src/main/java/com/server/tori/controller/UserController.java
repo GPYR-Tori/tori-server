@@ -37,6 +37,15 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.OK).body(myPageEditDto);
   }
 
+  // 닉네임 중복 확인
+  @PostMapping("/users/check/nickname")
+  // 2. findByEmail(dto.email)해서 조회되는 User객체가 있으면 throw new RuntimeException() 없으면 동일한 이메일이 없다는 것이므로 응답값 리턴
+  public ResponseEntity<CheckNicknameResponseDto> checkNickname(@PathVariable Long userId, @RequestBody CheckNicknameRequestDto checkNicknameRequestDto) {
+    CheckNicknameResponseDto checkEmailDto = userService.checkNickname(userId, checkNicknameRequestDto);
+    return ResponseEntity.status(HttpStatus.OK).body(checkEmailDto);
+  }
+
+
   // 회원 탈퇴
   @PostMapping("/users/{userId}/edit")
   public ResponseEntity<String> userOut(@PathVariable Long userId) {
