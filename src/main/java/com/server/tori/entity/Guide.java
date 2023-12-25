@@ -20,7 +20,7 @@ public class Guide {
   private String price; // 여행가격
   private String tripPoint; // 여행출발,도착지
   private String course; // 여행코스
-  private String categori; // A, B ... course
+  private String category; // A, B ... course
 
 
 }

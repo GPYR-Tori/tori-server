@@ -1,0 +1,21 @@
+language: java
+
+jdk:
+ - openjdk17
+
+branches:
+ only:
+  - main
+
+# Travis CI 서버의 Home
+cache:
+ directories:
+  - '$HOME/.m2/repository'
+  - '$HOME/.gradle'
+
+script: "./gradlew clean build"
+
+notifications:
+ email:
+  recipients:
+   - jhjune0823@naver.com

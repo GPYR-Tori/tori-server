@@ -19,7 +19,7 @@ public class QGuide extends EntityPathBase<Guide> {
 
     public static final QGuide guide = new QGuide("guide");
 
-    public final StringPath categori = createString("categori");
+    public final StringPath category = createString("category");
 
     public final StringPath course = createString("course");
 

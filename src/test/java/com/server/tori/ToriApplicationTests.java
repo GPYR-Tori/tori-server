@@ -10,8 +10,4 @@ import java.util.List;
 @SpringBootTest
 class ToriApplicationTests {
 
-	@Test
-	void testJpa() {
-
-	}
 }

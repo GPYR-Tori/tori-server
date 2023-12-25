@@ -54,7 +54,7 @@ public class GuideService {
     List<GuideValueDto> guideValueDtos = new ArrayList<>();
 
     for (Guide guide : guides) {
-      if (category.equals(guide.getCategori())) {
+      if (category.equals(guide.getCategory())) {
         GuideValueDto guideValueDto = new GuideValueDto();
         guideValueDto.setPrice(guide.getPrice());
         guideValueDto.setTripPoint(guide.getTripPoint());
