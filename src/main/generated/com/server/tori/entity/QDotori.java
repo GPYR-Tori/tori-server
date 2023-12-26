@@ -22,6 +22,8 @@ public class QDotori extends EntityPathBase<Dotori> {
 
     public static final QDotori dotori = new QDotori("dotori");
 
+    public final DateTimePath<java.time.LocalDateTime> createDate = createDateTime("createDate", java.time.LocalDateTime.class);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final QUser user;
