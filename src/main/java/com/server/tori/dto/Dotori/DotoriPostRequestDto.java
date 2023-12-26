@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class DotoriRequestDto {
+public class DotoriPostRequestDto {
     private Long userId;
     private Long landmarkId;
 }
