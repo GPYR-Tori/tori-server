@@ -23,7 +23,10 @@ public class Dotori {
     @JsonBackReference
     private User user;
 
-    public Dotori(User user) {
+    private LocalDateTime createDate;
+
+    public Dotori(User user, LocalDateTime createDate) {
         this.user = user;
+        this.createDate = createDate;
     }
 }

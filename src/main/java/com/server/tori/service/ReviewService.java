@@ -38,7 +38,7 @@ public class ReviewService {
         User user = getUserById(reviewCreateRequestDto.getUserId());
         Landmark landmark = getLandmarkById(landmarkId);
 
-        Dotori dotori = dotoriRepository.save(new Dotori(user));
+        Dotori dotori = dotoriRepository.save(new Dotori(user, LocalDateTime.now()));
 
         Review review = reviewRepository.save(
                 new Review(user, landmark, dotori,
