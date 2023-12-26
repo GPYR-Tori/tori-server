@@ -1,12 +1,14 @@
 package com.server.tori.service;
 
-import com.server.tori.dto.Dotori.DotoriMyPageResponseDto;
-import com.server.tori.dto.Dotori.DotoriRequestDto;
-import com.server.tori.dto.Dotori.DotoriLocationResponseDto;
+import com.server.tori.dto.Dotori.MyDotoriGetResponseDto;
+import com.server.tori.dto.Dotori.DotoriPostRequestDto;
+import com.server.tori.dto.Dotori.DotoriLocationGetResponseDto;
 import com.server.tori.entity.Dotori;
 import com.server.tori.entity.Landmark.Landmark;
 import com.server.tori.entity.Landmark.Translation;
 import com.server.tori.entity.User;
+import com.server.tori.exception.CustomException;
+import com.server.tori.exception.ErrorCode;
 import com.server.tori.repository.DotoriRepository;
 import com.server.tori.repository.LandmarkRepository;
 import com.server.tori.repository.TranslationRepository;
@@ -14,8 +16,8 @@ import com.server.tori.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,57 +39,52 @@ public class DotoriService {
     private static final String DEFAULT_LANGUAGE = "영어";
     private String userLanguage = DEFAULT_LANGUAGE;
 
-    public List<DotoriLocationResponseDto> getLandmarksByUser(Long userId, double latitude, double longitude) {
+    public List<DotoriLocationGetResponseDto> getLandmarkByUser(Long userId, double latitude, double longitude) {
 
         if (userId != null) {
-            Optional<User> userOptional = userRepository.findById(userId);
-
-            if (userOptional.isPresent()) {
-                User selectedUser = userOptional.get();
-                userLanguage = selectedUser.getLanguage();
-            } else {
-                return null;
-            }
+            userRepository.findById(userId)
+                    .ifPresent(user -> userLanguage = user.getLanguage());
         }
 
-        List<Landmark> landmarksList = landmarkRepository.findLandmarksByDistance(latitude, longitude);
+        List<Landmark> landmarksList = landmarkRepository.findLandmarkByDistance(latitude, longitude);
 
         return landmarksList.stream()
-                .map(selectedLandmark -> {
-                    Translation selectedTranslation = translationRepository.findByLandmarkAndLanguage(selectedLandmark, userLanguage);
-                    return new DotoriLocationResponseDto(selectedLandmark, selectedTranslation);
+                .map(landmark -> {
+                    Translation translation = translationRepository.findByLandmarkIdAndLanguage(landmark.getId(), userLanguage)
+                            .orElse(new Translation());
+                    return new DotoriLocationGetResponseDto(landmark, translation);
                 })
                 .collect(Collectors.toList());
     }
 
-    public String postDotori(DotoriRequestDto dotoriRequestDto) {
-        Optional<User> userOptional = userRepository.findById(dotoriRequestDto.getUserId());
-        Optional<Landmark> landmarkOptional = landmarkRepository.findById(dotoriRequestDto.getLandmarkId());
+    public String createDotori(DotoriPostRequestDto dotoriPostRequestDto) {
 
-        if (userOptional.isPresent() && landmarkOptional.isPresent()) {
-            User selectedUser = userOptional.get();
-            Landmark selectedLandmark = landmarkOptional.get();
+        User user = getUserById(dotoriPostRequestDto.getUserId());
 
-            Dotori dotori = new Dotori(selectedUser);
-            dotoriRepository.save(dotori);
+        Landmark landmark = landmarkRepository.findById(dotoriPostRequestDto.getLandmarkId())
+                .orElseThrow(() -> new CustomException(ErrorCode.LANDMARK_NOT_FOUND));
 
-            return "sucess";
-        }
-        return "false";
+        Dotori dotori = new Dotori(user, LocalDateTime.now());
+        dotoriRepository.save(dotori);
+
+        return "도토리가 성공적으로 적립되었습니다.";
+
     }
 
-    public DotoriMyPageResponseDto getDotoriInfo(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
+    public MyDotoriGetResponseDto getDotoriInfo(Long userId) {
 
-        if (userOptional.isPresent()) {
-            User selectedUser = userOptional.get();
+        User user = getUserById(userId);
 
-            int total = dotoriRepository.countByUser(selectedUser);
-            int num = total % 10;
+        int total = dotoriRepository.countByUser(user);
+        int num = total % 10;
 
-            return new DotoriMyPageResponseDto(total, num);
-        } else {
-            return null;
-        }
+        return new MyDotoriGetResponseDto(total, num);
+        // todo: 도토리 랭킹, 도토리 내역 (10개) 추가
+
+    }
+
+    private User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
     }
 }
