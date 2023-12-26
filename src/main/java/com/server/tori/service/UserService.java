@@ -6,6 +6,8 @@ import com.server.tori.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -50,8 +52,20 @@ public class UserService {
     userRepository.save(user);
   }
 
+  // 마이페이지(프로필수정) 해당 user 정보 가져오기
   public MyPageProfileResponseDto myPageProfile(Long id){
     User saved = userRepository.findById(id).orElseThrow(null );
     return new MyPageProfileResponseDto(saved.getId(), saved.getEmail(), saved.getPassword(), saved.getGender(), saved.getNation(), saved.getLanguage(), saved.getNickname());
   }
+
+  // 마이페이지(프로필수정) 닉네임 중복확인
+  public CheckNicknameResponseDto checkNickname(Long userId, CheckNicknameRequestDto checkNicknameRequestDto) {
+    String nicknameToCheck = checkNicknameRequestDto.getNickname();
+    Optional<User> existingUser = userRepository.findByNickname(nicknameToCheck);
+    if (existingUser.isPresent() && !existingUser.get().getId().equals(userId)) {
+      throw new RuntimeException("중복된 닉네임입니다.");
+    }
+    return new CheckNicknameResponseDto(nicknameToCheck);
+  }
+
 }
