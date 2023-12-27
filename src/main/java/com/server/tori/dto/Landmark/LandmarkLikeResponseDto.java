@@ -14,6 +14,4 @@ public class LandmarkLikeResponseDto {
   public LandmarkLikeResponseDto(Long userId, Long landmarkId) {
   }
 
-  public LandmarkLikeResponseDto(Long userId, List<Long> landmarkId) {
-  }
 }

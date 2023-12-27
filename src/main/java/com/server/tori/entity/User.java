@@ -36,13 +36,21 @@ public class User {
 
   public String nickname;
 
-  public User(Long id, String email, String password) {
-  }
-
   public User(String password, String gender, String nation ,String language, String nickname) {
+    this.password = password;
+    this.gender = gender;
+    this.nation = nation;
+    this.language = language;
+    this.nickname = nickname;
   }
 
   public User(String email, String password, String gender, String nation, String language, String nickname) {
+    this.email = email;
+    this.password = password;
+    this.gender = gender;
+    this.nation = nation;
+    this.language = language;
+    this.nickname = nickname;
   }
 
   public void patch(MyPageEditRequestDto myPageEditRequestDto) {

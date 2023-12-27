@@ -32,12 +32,13 @@ public class LoginController {
   @PostMapping("/join")
 // 1. request로 들어온 필드들로 User user = new User (유저 정보값) 넣고 userRepository.save(user)하고 리턴
   public ResponseEntity<JoinResponseDto> join(@RequestBody JoinRequestDto joinRequestDto) {
+    log.info("Received Join Request: {}", joinRequestDto);
     if (joinRequestDto.getPassword().length() >= 8) {
       JoinResponseDto joinDto = userService.join(joinRequestDto);
       return ResponseEntity.status(HttpStatus.OK).body(joinDto);
     } else {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-          .body(new JoinResponseDto("비밀번호는 8자 이상이어야 합니다."));
+          .build();
     }
   }
 

@@ -17,7 +17,7 @@ public class UserService {
   public JoinResponseDto join(JoinRequestDto joinRequestDto) {
     User user = joinRequestDto.toEntity();
     User saved = userRepository.save(user);
-    return new JoinResponseDto(saved.getId(), saved.getEmail(), saved.getPassword(), saved.getGender(), saved.getNation(), saved.getLanguage(), saved.getNickname()); // 전부 리털할 필요가있나?
+    return new JoinResponseDto(saved);
   }
 
   public MyPageResponseDto myPage(Long uesrId) {
