@@ -50,16 +50,14 @@ public class GuideService {
     return guideResponseDto;
   }
 
-  private List<GuideValueDto> mapGuideValues(List<Guide> guides, String category) {
-    List<GuideValueDto> guideValueDtos = new ArrayList<>();
+  private GuideValueDto mapGuideValues(List<Guide> guides, String category) {
+    GuideValueDto guideValueDtos = new GuideValueDto();
 
     for (Guide guide : guides) {
       if (category.equals(guide.getCategory())) {
-        GuideValueDto guideValueDto = new GuideValueDto();
-        guideValueDto.setPrice(guide.getPrice());
-        guideValueDto.setTripPoint(guide.getTripPoint());
-        guideValueDto.setCourse(guide.getCourse());
-        guideValueDtos.add(guideValueDto);
+        guideValueDtos.setPrice(guide.getPrice());
+        guideValueDtos.setTripPoint(guide.getTripPoint());
+        guideValueDtos.setCourse(guide.getCourse());;
       }
     }
     return guideValueDtos;

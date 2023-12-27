@@ -13,25 +13,25 @@ import java.util.List;
 public class GuideResponseDto {
 
   public String content;
-  private List<GuideValueDto> A_course;
-  private List<GuideValueDto> B_course;
-  private List<GuideValueDto> C_course;
-  private List<GuideValueDto> D_course;
-  private List<GuideValueDto> E_course;
-  private List<GuideValueDto> F_course;
-  private List<GuideValueDto> G_course;
-  private List<GuideValueDto> H_course;
-  private List<GuideValueDto> I_course;
-  private List<GuideValueDto> J_course;
-  private List<GuideValueDto> K_course;
-  private List<GuideValueDto> L_course;
+  private GuideValueDto A_course;
+  private GuideValueDto B_course;
+  private GuideValueDto C_course;
+  private GuideValueDto D_course;
+  private GuideValueDto E_course;
+  private GuideValueDto F_course;
+  private GuideValueDto G_course;
+  private GuideValueDto H_course;
+  private GuideValueDto I_course;
+  private GuideValueDto J_course;
+  private GuideValueDto K_course;
+  private GuideValueDto L_course;
 
   // private Map<int,List<GuideValueDto>> 확장성 생각해보기
 
-  public GuideResponseDto(String content, List<GuideValueDto> A_course, List<GuideValueDto> B_course, List<GuideValueDto> C_course,
-                          List<GuideValueDto> D_course, List<GuideValueDto> E_course, List<GuideValueDto> F_course,
-                          List<GuideValueDto> G_course, List<GuideValueDto> H_course, List<GuideValueDto> I_course,
-                          List<GuideValueDto> J_course, List<GuideValueDto> K_course, List<GuideValueDto> L_course) {
+  public GuideResponseDto(String content, GuideValueDto A_course, GuideValueDto B_course, GuideValueDto C_course,
+                          GuideValueDto D_course, GuideValueDto E_course, GuideValueDto F_course,
+                          GuideValueDto G_course, GuideValueDto H_course, GuideValueDto I_course,
+                          GuideValueDto J_course, GuideValueDto K_course, GuideValueDto L_course) {
     this.content = content;
     this.A_course = A_course;
     this.B_course = B_course;
