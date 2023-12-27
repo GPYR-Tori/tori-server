@@ -36,19 +36,17 @@ public class UserService {
     if (newNickname != null && userRepository.existsByNicknameAndIdNot(newNickname, userId)) {
       throw new IllegalArgumentException("Nickname is already in use by another user");
     }
-
     user.patch(myPageEditRequestDto);
     //3. 그 엔티티 저장
     User updated = userRepository.save(user);
     return new MyPageEditResponseDto(updated.getId(), updated.getEmail(), updated.getPassword(), updated.getGender(), updated.getNation(), updated.getLanguage(), updated.getNickname());
   }
 
+  // 탈퇴회원 닉네임, 이메일 변경
   public void userOut(Long userId) {
-    // 해당 유저 정보 가져와 닉네임 변경 및 나머지 데이터 초기화
     User user = userRepository.findById(userId).orElseThrow(null);
-    user.setNickname("탈퇴 회원");
-    user.setEmail("탈퇴 회원");
-    // 초기화된 데이터 디비에 저장
+    user.setNickname("former member");
+    user.setEmail("former member");
     userRepository.save(user);
   }
 
@@ -63,7 +61,7 @@ public class UserService {
     String nicknameToCheck = checkNicknameRequestDto.getNickname();
     Optional<User> existingUser = userRepository.findByNickname(nicknameToCheck);
     if (existingUser.isPresent() && !existingUser.get().getId().equals(userId)) {
-      throw new RuntimeException("중복된 닉네임입니다.");
+      throw new RuntimeException("Nickname is already taken");
     }
     return new CheckNicknameResponseDto(nicknameToCheck);
   }

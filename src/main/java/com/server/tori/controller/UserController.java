@@ -15,8 +15,8 @@ public class UserController {
 
   // 마이페이지
   @GetMapping("/users/{userId}")
-// 1. userService.getUser(long userId)
-//   서비스에서 repository.findById(userId)로 조회한 후 user엔티티 dto로 만들어서 리턴
+  // 1. userService.getUser(long userId)
+  // 서비스에서 repository.findById(userId)로 조회한 후 user엔티티 dto로 만들어서 리턴
   public ResponseEntity<MyPageResponseDto> myPage(@PathVariable Long userId) {
     MyPageResponseDto myPageDto = userService.myPage(userId);
     return ResponseEntity.status(HttpStatus.OK).body(myPageDto);
