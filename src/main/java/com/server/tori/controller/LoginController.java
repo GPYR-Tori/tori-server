@@ -30,7 +30,7 @@ public class LoginController {
 
   // 회원가입
   @PostMapping("/join")
-// 1. request로 들어온 필드들로 User user = new User (유저 정보값) 넣고 userRepository.save(user)하고 리턴
+  // 1. request로 들어온 필드들로 User user = new User (유저 정보값) 넣고 userRepository.save(user)하고 리턴
   public ResponseEntity<JoinResponseDto> join(@RequestBody JoinRequestDto joinRequestDto) {
     log.info("Received Join Request: {}", joinRequestDto);
     if (joinRequestDto.getPassword().length() >= 8) {
@@ -44,7 +44,7 @@ public class LoginController {
 
   // 이메일 중복확인
   @PostMapping("/check/email")
-// 2. findByEmail(dto.email)해서 조회되는 User객체가 있으면 throw new RuntimeException() 없으면 동일한 이메일이 없다는 것이므로 응답값 리턴
+  // 2. findByEmail(dto.email)해서 조회되는 User객체가 있으면 throw new RuntimeException() 없으면 동일한 이메일이 없다는 것이므로 응답값 리턴
   public ResponseEntity<CheckEmailResponseDto> checkEmail(@RequestBody CheckEmailRequestDto checkEmailRequestDto) {
     CheckEmailResponseDto checkEmailDto = loginService.checkEmail(checkEmailRequestDto);
     return ResponseEntity.status(HttpStatus.OK).body(checkEmailDto);
@@ -52,7 +52,7 @@ public class LoginController {
   }
   // 닉네임 중복확인
   @PostMapping("/check/nickname")
-// 2. findByEmail(dto.email)해서 조회되는 User객체가 있으면 throw new RuntimeException() 없으면 동일한 이메일이 없다는 것이므로 응답값 리턴
+  // 2. findByEmail(dto.email)해서 조회되는 User객체가 있으면 throw new RuntimeException() 없으면 동일한 이메일이 없다는 것이므로 응답값 리턴
   public ResponseEntity<CheckNicknameResponseDto> checkNickname(@RequestBody CheckNicknameRequestDto checkNicknameRequestDto) {
     CheckNicknameResponseDto checkEmailDto = loginService.checkNickname(checkNicknameRequestDto);
     return ResponseEntity.status(HttpStatus.OK).body(checkEmailDto);
