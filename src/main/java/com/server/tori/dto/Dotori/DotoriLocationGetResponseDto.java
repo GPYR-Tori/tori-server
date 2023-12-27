@@ -7,14 +7,14 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class DotoriLocationResponseDto {
+public class DotoriLocationGetResponseDto {
     private Long landmarkId;
     private String name;
     private String address;
     private double longitude;
     private double latitude;
 
-    public DotoriLocationResponseDto(Landmark landmark, Translation translation) {
+    public DotoriLocationGetResponseDto(Landmark landmark, Translation translation) {
         this.landmarkId = landmark.getId();
         this.name = translation.getName();
         this.address = translation.getAddress();
