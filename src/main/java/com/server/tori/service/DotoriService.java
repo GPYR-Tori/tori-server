@@ -67,6 +67,9 @@ public class DotoriService {
         Dotori dotori = new Dotori(user, LocalDateTime.now());
         dotoriRepository.save(dotori);
 
+        // 해준 추가, 조회를 목적을 둔 양방향 맵핑
+        user.insertDotori(dotori);
+
         return "도토리가 성공적으로 적립되었습니다.";
 
     }

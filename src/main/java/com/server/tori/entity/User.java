@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -35,6 +36,12 @@ public class User {
   public String language;
 
   public String nickname;
+
+  @OneToMany(mappedBy = "user") //db에 적용이 되지 않는 조회를 목적을 둔 필드(필수가 아닌 양방향 맵핑)
+  public List<Like> likes = new ArrayList<>();
+
+  @OneToMany(mappedBy = "dotori")
+  public List<Dotori> dotoris = new ArrayList<>();
 
   public User(String password, String gender, String nation ,String language, String nickname) {
     this.password = password;
@@ -65,4 +72,13 @@ public class User {
     }
   }
 
+  public void insertLike(Like like){
+    this.likes.add(like);
+    like.setUser(this);
+  }
+
+  public void insertDotori(Dotori dotori){
+    this.dotoris.add(dotori);
+    dotori.setUser(this);
+  }
 }

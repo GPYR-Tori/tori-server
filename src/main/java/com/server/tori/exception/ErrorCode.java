@@ -11,6 +11,7 @@ import static org.springframework.http.HttpStatus.*;
 public enum ErrorCode {
 
     // 400 BAD_REQUEST: 잘못된 요청
+    PASSWORD_NOT_EQUIR(BAD_REQUEST, "일치하지 않은 비밀번호입니다."),
 
 
     // 401 UNAUTHORIZED: 인증되지 않은 사용자
@@ -27,8 +28,11 @@ public enum ErrorCode {
     LANDMARK_NOT_FOUND(NOT_FOUND, "해당 여행지 정보를 찾을 수 없습니다."),
     REVIEW_NOT_FOUND(NOT_FOUND, "해당 리뷰를 찾을 수 없습니다."),
     COMMENT_NOT_FOUND(NOT_FOUND, "해당 댓글을 찾을 수 없습니다."),
+    LANGUAGE_NOT_FOUND(NOT_FOUND, "해당 회원의 언어를 찾을 수 없습니다."),
 
     // 409 CONFLICT: 중복된 리소스
+    DUPLICATE_NICKNAME(CONFLICT, "이미 사용 중인 닉네임입니다."),
+    DUPLICATE_EMAIL(CONFLICT, "이미 사용 중인 이메일입니다."),
 
 
     // 500 INTERNAL SERVER ERROR
