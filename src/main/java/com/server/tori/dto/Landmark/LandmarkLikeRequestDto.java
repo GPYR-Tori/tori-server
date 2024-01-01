@@ -1,13 +1,11 @@
 package com.server.tori.dto.Landmark;
 
 import com.server.tori.entity.Like;
+import lombok.Getter;
 
+@Getter
 public class LandmarkLikeRequestDto {
-  public Long userId; // 누가 좋아요 누른지 알아야되니까
-  public Long landmarkId; // 어떤 여행지를 좋아요 누른지 알아야 되니까
-
-  public Like toEntity() {
-    return new Like(userId, landmarkId);
-  }
+  private Long userId; // 누가 좋아요 누른지 알아야되니까
+  private Long landmarkId; // 어떤 여행지를 좋아요 누른지 알아야 되니까
 
 }

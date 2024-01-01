@@ -1,5 +1,7 @@
 package com.server.tori.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.server.tori.entity.Landmark.Landmark;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,12 +16,22 @@ public class Like {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   public Long id;
-  public Long userId;
-  public Long landmarkId;
 
-  public Like(Long userId, Long landmarkId) {
-    this.userId = userId;
-    this.landmarkId = landmarkId;
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  public User user;
+
+  @ManyToOne
+  @JoinColumn(name = "landmark_id")
+  public Landmark landmark;
+
+  public Like(User user, Landmark landmark) {
+    this.user = user;
+    this.landmark = landmark;
+  }
+
+  public void setUser(User user){
+    this.user = user;
   }
 
 }
