@@ -40,7 +40,7 @@ public class User {
   @OneToMany(mappedBy = "user") //db에 적용이 되지 않는 조회를 목적을 둔 필드(필수가 아닌 양방향 맵핑)
   public List<Like> likes = new ArrayList<>();
 
-  @OneToMany(mappedBy = "dotori")
+  @OneToMany(mappedBy = "user")
   public List<Dotori> dotoris = new ArrayList<>();
 
   public User(String password, String gender, String nation ,String language, String nickname) {

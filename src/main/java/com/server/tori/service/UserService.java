@@ -55,10 +55,17 @@ public class UserService {
   // 마이페이지(프로필수정) 닉네임 중복확인
   public CheckNicknameResponseDto checkNickname(Long userId, CheckNicknameRequestDto checkNicknameRequestDto) {
     String nicknameToCheck = checkNicknameRequestDto.getNickname();
-    Optional<User> existingUser = userRepository.findByNickname(nicknameToCheck);
-    if (existingUser.isPresent() && !existingUser.get().getId().equals(userId)) {
+    // 해당 유저를 찾는다. 해당 유저의 닉네임을 찾는다 만약 같으면 넘어간다.
+    User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    if (user.getNickname().equals(checkNicknameRequestDto.getNickname()))
+      return new CheckNicknameResponseDto(nicknameToCheck);
+    // 유저 레파토리에서 중복확인하려는 닉네임을 검색해본다. 닉네임이 없으면 통과 있으면 예외처리
+    Optional<User> userOptional = userRepository.findByNickname(nicknameToCheck);
+    // 닉네임이 존재할 경우 예외 발생
+    if (userOptional.isPresent()) {
       throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
     }
+    // 닉네임이 존재하지 않을 경우 바로 return
     return new CheckNicknameResponseDto(nicknameToCheck);
   }
 
