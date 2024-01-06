@@ -6,6 +6,7 @@ import com.server.tori.exception.CustomException;
 import com.server.tori.exception.ErrorCode;
 import com.server.tori.exception.ErrorResponse;
 import com.server.tori.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,14 +29,14 @@ public class UserService {
     return new MyPageResponseDto(userPage.getNickname());
   }
 
+  @Transactional
   public MyPageEditResponseDto myPageEdit(Long userId, MyPageEditRequestDto myPageEditRequestDto) {
     //1. 유저조회
     User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
     //2. 해당 유저 엔티티에 requestdto로 받은 값을 set해서 수정(조건 사항이 안 맞으면 예외 발생)
     user.patch(myPageEditRequestDto);
     //3. 그 엔티티 저장
-    User updated = userRepository.save(user);
-    return new MyPageEditResponseDto(updated.getId(), updated.getEmail(), updated.getPassword(), updated.getGender(), updated.getNation(), updated.getLanguage(), updated.getNickname());
+    return new MyPageEditResponseDto(user.getId(), user.getEmail(), user.getPassword(), user.getGender(), user.getNation(), user.getLanguage(), user.getNickname());
   }
 
   // 탈퇴회원 닉네임, 이메일 변경

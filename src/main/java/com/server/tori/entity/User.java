@@ -64,6 +64,12 @@ public class User {
     if (myPageEditRequestDto.getPassword() != null) {
       this.password = myPageEditRequestDto.getPassword();
     }
+    if (myPageEditRequestDto.getNation() != null) {
+      this.nation = myPageEditRequestDto.getNation();
+    }
+    if (myPageEditRequestDto.getGender() != null) {
+      this.gender = myPageEditRequestDto.getGender();
+    }
     if (myPageEditRequestDto.getLanguage() != null) {
       this.language = myPageEditRequestDto.getLanguage();
     }
