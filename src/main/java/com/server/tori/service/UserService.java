@@ -6,6 +6,7 @@ import com.server.tori.exception.CustomException;
 import com.server.tori.exception.ErrorCode;
 import com.server.tori.exception.ErrorResponse;
 import com.server.tori.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,14 +29,14 @@ public class UserService {
     return new MyPageResponseDto(userPage.getNickname());
   }
 
+  @Transactional
   public MyPageEditResponseDto myPageEdit(Long userId, MyPageEditRequestDto myPageEditRequestDto) {
     //1. 유저조회
     User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
     //2. 해당 유저 엔티티에 requestdto로 받은 값을 set해서 수정(조건 사항이 안 맞으면 예외 발생)
     user.patch(myPageEditRequestDto);
     //3. 그 엔티티 저장
-    User updated = userRepository.save(user);
-    return new MyPageEditResponseDto(updated.getId(), updated.getEmail(), updated.getPassword(), updated.getGender(), updated.getNation(), updated.getLanguage(), updated.getNickname());
+    return new MyPageEditResponseDto(user.getId(), user.getEmail(), user.getPassword(), user.getGender(), user.getNation(), user.getLanguage(), user.getNickname());
   }
 
   // 탈퇴회원 닉네임, 이메일 변경
@@ -55,10 +56,17 @@ public class UserService {
   // 마이페이지(프로필수정) 닉네임 중복확인
   public CheckNicknameResponseDto checkNickname(Long userId, CheckNicknameRequestDto checkNicknameRequestDto) {
     String nicknameToCheck = checkNicknameRequestDto.getNickname();
-    Optional<User> existingUser = userRepository.findByNickname(nicknameToCheck);
-    if (existingUser.isPresent() && !existingUser.get().getId().equals(userId)) {
+    // 해당 유저를 찾는다. 해당 유저의 닉네임을 찾는다 만약 같으면 넘어간다.
+    User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    if (user.getNickname().equals(checkNicknameRequestDto.getNickname()))
+      return new CheckNicknameResponseDto(nicknameToCheck);
+    // 유저 레파토리에서 중복확인하려는 닉네임을 검색해본다. 닉네임이 없으면 통과 있으면 예외처리
+    Optional<User> userOptional = userRepository.findByNickname(nicknameToCheck);
+    // 닉네임이 존재할 경우 예외 발생
+    if (userOptional.isPresent()) {
       throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
     }
+    // 닉네임이 존재하지 않을 경우 바로 return
     return new CheckNicknameResponseDto(nicknameToCheck);
   }
 

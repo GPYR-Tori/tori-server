@@ -1,14 +1,13 @@
 package com.server.tori.dto.Guide;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 
-public class GuideTourBusResponseDto {
+public class GuideTourBusGetResponseDto {
   public String content;
 
-  public GuideTourBusResponseDto(String content) {
+  public GuideTourBusGetResponseDto(String content) {
     this.content = content;
   }
 }

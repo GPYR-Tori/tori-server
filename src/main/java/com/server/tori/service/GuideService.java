@@ -47,7 +47,9 @@ public class GuideService {
     guideResponseDto.setL_course(mapGuideValues(guides, "L_course"));
 
     // 9. GuideResponseDto를 반환합니다.
-    return guideResponseDto;
+    return new GuideResponseDto(tourBus.getContent(),guideResponseDto.getA_course(),guideResponseDto.getB_course(),guideResponseDto.getC_course(),guideResponseDto.getD_course()
+        ,guideResponseDto.getE_course(),guideResponseDto.getF_course(),guideResponseDto.getG_course(),guideResponseDto.getH_course(),guideResponseDto.getI_course(),guideResponseDto.getJ_course(),
+        guideResponseDto.getK_course(),guideResponseDto.getL_course());
   }
 
   private GuideValueDto mapGuideValues(List<Guide> guides, String category) {
